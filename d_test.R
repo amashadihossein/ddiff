@@ -5,8 +5,8 @@ d_test <- function(){
   df <- data.frame(mtx)
   colnames(df) <- paste0("nm_",1:3)
   df <- cbind(df,
-              cat_1 = sample(x = letters[1:3],size = n,replace = T),
-              bin_1 = sample(x = c("Y","N"), size = n, replace = T),
+              cat_1 = as.factor(sample(x = letters[1:3],size = n,replace = T)),
+              bin_1 = as.factor(sample(x = c("Y","N"), size = n, replace = T)),
               id = paste0("id_",1:nrow(df)))
   
   test_d <- list()
@@ -41,8 +41,8 @@ d_test <- function(){
   df1 <- data.frame(mtx)
   colnames(df1) <- paste0("nm_",1:3)
   df1 <- cbind(df1,
-              cat_1 = sample(x = letters[1:3],size = n,replace = T),
-              bin_1 = sample(x = c("Y","N"), size = n, replace = T),
+              cat_1 = as.factor(sample(x = letters[1:3],size = n,replace = T)),
+              bin_1 = as.factor(sample(x = c("Y","N"), size = n, replace = T)),
               id = paste0("id_",n+1:nrow(df1)))
   
   
