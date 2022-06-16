@@ -1,0 +1,152 @@
+---
+title: "A Quick Start Guide to R Package ‘ddiff’"
+author: "Zhenbang Wang, Afshin.Mashadi-Hossein"
+#date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quick}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Installing the package
+
+```{r, eval=FALSE}
+install.packages("ddiff")
+```
+
+To install the (development) GitHub version, you could use 
+```{r, eval=FALSE}
+devtools::install_github("amashadihossein/ddiff") 
+```
+
+## Create two dataset for comparsion
+
+Describe the test cases for `ddiff` 
+
+- When data tables being compared are identical
+- When order of columns and rows are changed
+- When attributes are the same but content change
+- When attributes change but colnames are the same
+- When attributes change and colnames are different too
+- When new records are added to a table
+
+To compare these datasets, simply pass them to the `ddiff1` function:
+
+First, we need to load the package : 
+```{r results='markup'}
+#library(ddiff)
+source("/Users/dejavu/Library/CloudStorage/OneDrive-BristolMyersSquibb/ddiff/R/d_test.R")
+source("/Users/dejavu/Library/CloudStorage/OneDrive-BristolMyersSquibb/ddiff/R/ddiff_form.R")
+source("/Users/dejavu/Library/CloudStorage/OneDrive-BristolMyersSquibb/ddiff/R/get_variable_class.R")
+source("/Users/dejavu/Library/CloudStorage/OneDrive-BristolMyersSquibb/ddiff/R/get_variable_stat.R")
+d <- d_test(50)
+```
+
+## When data tables being compared are identical
+```{r results='markup'}
+ddiff_rpt <- ddiff_form(d$identical$new, d$identical$old, "id")
+ddiff_rpt
+```
+
+## When order of columns and rows are changed
+```{r results='markup'}
+ddiff_rpt <- ddiff_form(d$order$new, d$order$old, "id")
+ddiff_rpt
+```
+
+## When attributes are the same but content change
+```{r results='markup'}
+ddiff_rpt <- ddiff_form(d$attrs$same$new, d$attrs$same$old, "id")
+ddiff_rpt
+```
+
+## When attributes change but colnames are the same
+```{r results='markup'}
+ddiff_rpt <- ddiff_form(d$attrs$different$col_same$new, d$attrs$different$col_same$old, "id")
+ddiff_rpt
+```
+
+## When attributes change and colnames are different too
+```{r results='markup'}
+ddiff_rpt <- ddiff_form(d$attrs$different$col_diff$new, d$attrs$different$col_diff$old, "id")
+ddiff_rpt
+```
+
+## When new records are added to a table
+```{r results='markup'}
+ddiff_rpt <- ddiff_form(d$records_added$new, d$records_added$old, "id")
+ddiff_rpt
+```
+
+# Information content diff basic examples
+
+## Univariate information content diff
+
+### Continous Content
+```{r results='markup'}
+#information content diff
+ddiff_rpt <- get_variable_class(d$identical$new, d$identical$old,"id")
+ddiff_rpt
+data.tree::FromListSimple(ddiff_rpt)
+
+result <- get_variable_stat(d$identical$new, d$identical$old, "id")
+
+result$result_con
+result$result_cat
+result$result_bin
+
+#result <- get_variable_stat(d$identical$new, d$identical$old, "id", measure_arg_con = list(min, max, median))
+#result$result_con
+#result$result_cat
+#result$result_bin
+```
+
+## Vignette Info
+
+Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+
+## Styles
+
+The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+
+    output: 
+      rmarkdown::html_vignette:
+        css: mystyles.css
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))

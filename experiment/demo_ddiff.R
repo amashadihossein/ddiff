@@ -1,7 +1,8 @@
 getwd()
-source('R/ddiff.R')
-source('R/diff_info_1.R')
-source('R/d_test.R')
+source('experiment/ddiff.R')
+source('experiment/diff_info_1.R')
+source('experiment/d_test.R')
+source('univariate diff/get_variable_class.R')
 d <- d_test()
 
 #form and base content diff
@@ -31,3 +32,9 @@ data.tree::FromListSimple(ddiff_rpt)
 summary.con(d$identical$new, d$identical$old, ddiff_rpt, summary)
 summary.cat(d$identical$new, d$identical$old, ddiff_rpt, table)
 summary.bin(d$identical$new, d$identical$old, ddiff_rpt, table)
+
+####v2
+result <- get_variable_stat(d$identical$new, d$identical$old, "id")
+result$result_con
+result$result_cat
+result$result_bin

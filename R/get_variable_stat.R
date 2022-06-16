@@ -1,0 +1,89 @@
+#' obtain and compare custom summary statistics from given two datasets
+#'
+#' @description obtain and compare custom summary statistics from given two datasets. The comparison are made on three main aspects : continuous, categorical and binary
+#' @param dat1 First Data need to be compared.
+#' @param dat2 Second Data need to be compared.
+#' @param key Unique identifiers to link two datasets
+#' @param measure_arg_con list of function for summary statistics of continuous response. The defalut list is c("min", "max", "median", "mean", "standard error")
+#' @param measure_arg_cat list of function for summary statistics of categorical response
+#' @param measure_arg_bin list of function for summary statistics of binary response
+#' @return The sum of \code{x} and \code{y}.
+#' @examples
+#' #result <- get_variable_stat(d$identical$new, d$identical$old, "id")
+#' #result$result_con
+#' #result$result_cat
+#' #result$result_bin
+#'
+get_variable_stat <- function(dat1, dat2, key,
+                              measure_arg_con = list(min = min, max = max, med = median, mean = mean, std = "standard error"),
+                              measure_arg_cat = list(table = table), measure_arg_bin = list(table = table), ...){
+  abc <- function(...){
+    setwd("/Users/dejavu/Library/CloudStorage/OneDrive-BristolMyersSquibb/diff_function/ddiff")
+    source('experiment/ddiff.R')
+    source('experiment/diff_info_1.R')
+    source('experiment/d_test.R')
+    source('univariate diff/get_variable_class.R')
+    d <- d_test()
+    dat1 = d$records_added$new
+    dat2 = d$records_added$old
+    key = "id"
+    n1 = nrow(dat1); d1 = ncol(dat1); n2 = nrow(dat2); d2 = ncol(dat2)
+    measure_arg_con = list(min, max, median, mean)
+    measure_arg_con = list(min = min, max = max, med = median, mean = mean)
+    measure_arg_con = list(min = min, max = max, median = median, mean = mean, std = "standard error")
+    measure_arg_cat = list(table = table)
+    measure_arg_bin = list(table = table)
+    objective = get_variable_class(dat1, dat2, "id")
+  }
+  objective = get_variable_class(dat1, dat2,  key)
+  diff_result <- NULL
+
+  if("standard error" %in% measure_arg_con){
+    con_summary1 <- data.frame(sapply(dat1[, unlist(objective$data_1$continous)], function(x) sqrt(var(x) / length(x))))
+    con_summary2 <- data.frame(sapply(dat2[, unlist(objective$data_2$continous)], function(x) sqrt(var(x) / length(x))))
+    abc1 <- merge(con_summary1, con_summary2, by="row.names")
+    abc2 <- cbind(rep("standard error", ncol(abc1)), abc1)
+    colnames(abc2) <- c("stat", "variable", "data1", "data2")
+    measure_arg_con = measure_arg_con[!measure_arg_con == "standard error"]
+  }
+
+  for (arg in names(measure_arg_con)) {
+    #arg = "min"
+    test1 = data.frame(sapply(dat1[, unlist(objective$data_1$continous)], measure_arg_con[[arg]]))
+    test2 = data.frame(sapply(dat2[, unlist(objective$data_2$continous)], measure_arg_con[[arg]]))
+    abc <- merge(test1, test2, by="row.names")
+    diff_result <- rbind(diff_result, cbind(rep(arg, ncol(abc)),  abc))
+    #class(arg)
+  }
+  #match.call()[[1]]
+  #class(match.fun(min))
+  #match.call(arg)
+  colnames(diff_result) <- c("stat", "variable", "data1", "data2")
+
+  if("standard error" %in% measure_arg_con){
+    diff_result <- rbind(diff_result, abc2)
+  }
+
+  diff_result_cat <- NULL
+  for (arg in names(measure_arg_cat)) {
+    #arg = "table"
+    cat_table1 <- data.frame(apply(dat1[, unlist(objective$data_1$categorical), drop=F], 2, measure_arg_cat[[arg]]))
+    cat_table2 <- data.frame(apply(dat2[, unlist(objective$data_2$categorical), drop=F], 2, measure_arg_cat[[arg]]))
+    abc <- merge(cat_table1, cat_table2, by="row.names")
+    diff_result_cat <- rbind(diff_result_cat, abc)
+  }
+  colnames(diff_result_cat) <- c(unlist(objective$data_2$categorical), "data1", "data2")
+
+  diff_result_bin <- NULL
+  for (arg in names(measure_arg_bin)) {
+    #arg = "table"
+    bin_table1 <- data.frame(apply(dat1[, unlist(objective$data_1$binary), drop=F], 2, measure_arg_bin[[arg]]))
+    bin_table2 <- data.frame(apply(dat2[, unlist(objective$data_2$binary), drop=F], 2, measure_arg_bin[[arg]]))
+    abc <- merge(bin_table1, bin_table2, by="row.names")
+    diff_result_bin <- rbind(diff_result_bin, abc)
+  }
+  colnames(diff_result_bin) <- c(unlist(objective$data_2$binary), "data1", "data2")
+
+  return(list(result_con = diff_result, result_cat = diff_result_cat, result_bin = diff_result_bin))
+}
+
