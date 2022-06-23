@@ -1,0 +1,9 @@
+pandoc: 2.17.1.1
+pkgdown: 2.0.4
+pkgdown_sha: ~
+articles:
+  multivaraite: multivaraite.html
+  quick_start: quick_start.html
+  why_ddiff: why_ddiff.html
+last_built: 2022-06-23T22:12Z
+

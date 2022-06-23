@@ -1,0 +1,21 @@
+Package: ddiff
+Title: A robust 'R' Functions for tracking data changes
+Version: 0.0.0.9000
+Authors@R: 
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Unlike evolution of human being, data nowadays can vary significantly in short period of time and by different underlying generative models. It is crucial to distinguish the difference between datasets both from appearance and underneath. While most of the package focus on difference of appearance (structure and data itself), few have pay attention to the statistical difference which is more interesting to researcher. This package try to create such function to provide user the ability to spot difference both structurally and statistically.
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
+Imports: 
+     arsenal, 
+     data.table,
+     data.tree
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
