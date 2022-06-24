@@ -14,3 +14,22 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Multivariate information diff
+For each variables in corresponding datasets, we could treat them as independent variables or we could view them as correlated variables where they are generated under some multivariate distribution.  The `get_varialbe_multi_stat` is designed for obtaining custom difference metrics on these variables. 
+
+First, we need to load the package and generate the simulated datasets : 
+```{r results='markup'}
+library(ddiff)
+d <- generate_test_data(50)
+```
+For continuous variables, the default metric is set to be the variance-covariance matrix for multivariate case. The default metric for categorical and binary variables are contingency table and confusion matrix. 
+```{r results='markup'}
+#Multivariate information diff
+ddiff_rpt <- get_variable_multi_stat(d$records_added$old, d$records_added$new,"id")
+ddiff_rpt
+```
+For lower dimensional data, we could compare the variance-covariance directly while for high dimensional data, this approach would be computationally expensive. One possible way around is that, we could apply dimension reduction methods on this case. For example, we could look at the difference by projecting the data into two dimension plane and compare them directly. 
+```{r results='markup'}
+pca_multi_stat(d$records_added$old, d$records_added$new,"id", ddiff_rpt)
+```
+

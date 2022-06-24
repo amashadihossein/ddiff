@@ -69,9 +69,6 @@ get_variable_multi_stat <- function(dat1, dat2, key,
     colnames(diff_result_bin) <- c(unlist(objective$data_2$binary), "data1", "data2")
   }
   #, result_cat = diff_result_cat, result_bin = diff_result_bin
-
-
-
    return(list(result_con = diff_result_con))
 }
 

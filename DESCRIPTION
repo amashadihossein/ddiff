@@ -14,7 +14,8 @@ RoxygenNote: 7.2.0
 Imports: 
      arsenal, 
      data.table,
-     data.tree
+     data.tree,
+     ggplot2
 Suggests: 
     knitr,
     rmarkdown

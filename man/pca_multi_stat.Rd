@@ -4,22 +4,18 @@
 \alias{pca_multi_stat}
 \title{obtain and compare custom summary statistics from given two datasets}
 \usage{
-pca_multi_stat(ddiff_objective, ...)
+pca_multi_stat(dat1, dat2, key, ddiff_objective, ...)
 }
 \arguments{
-\item{...}{potential argument to added}
-
 \item{dat1}{First Data need to be compared.}
 
 \item{dat2}{Second Data need to be compared.}
 
 \item{key}{Unique identifiers to link two datasets}
 
-\item{measure_arg_con}{list of function for summary statistics of continuous response. The defalut list is c("min", "max", "median", "mean", "standard error")}
+\item{ddiff_objective}{First Data need to be compared.}
 
-\item{measure_arg_cat}{list of function for summary statistics of categorical response}
-
-\item{measure_arg_bin}{list of function for summary statistics of binary response}
+\item{...}{potential argument to added}
 }
 \value{
 The sum of \code{x} and \code{y}.
