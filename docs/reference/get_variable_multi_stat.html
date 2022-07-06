@@ -32,6 +32,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/LR.html">literature review</a>
+    </li>
+    <li>
       <a href="../articles/multivaraite.html">beyond univariate ddiff</a>
     </li>
     <li>
@@ -67,6 +70,7 @@
   measure_arg_con <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>cov <span class="op">=</span> <span class="va">cov</span><span class="op">)</span>,
   measure_arg_cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">table</span><span class="op">)</span>,
   measure_arg_bin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">table</span><span class="op">)</span>,
+  dis_arg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"euclidean"</span>, <span class="st">"manhattan"</span>, <span class="st">"gower"</span><span class="op">)</span>,
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -95,6 +99,10 @@
 
 <dt>measure_arg_bin</dt>
 <dd><p>list of function for summary statistics of binary response</p></dd>
+
+
+<dt>dis_arg</dt>
+<dd><p>list of distance for measuring the difference of variables in each datasets</p></dd>
 
 
 <dt>...</dt>

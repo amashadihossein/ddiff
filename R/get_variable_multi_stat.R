@@ -7,6 +7,7 @@
 #' @param measure_arg_con list of function for summary statistics of continuous response. The defalut list is list(cov = cov)
 #' @param measure_arg_cat list of function for summary statistics of categorical response
 #' @param measure_arg_bin list of function for summary statistics of binary response
+#' @param dis_arg list of distance for measuring the difference of variables in each datasets
 #' @param ... potential argument to added
 #' @return The sum of \code{x} and \code{y}.
 #' @examples
@@ -20,10 +21,10 @@
 #'
 get_variable_multi_stat <- function(dat1, dat2, key,
                           measure_arg_con = list(cov = cov),
-                          measure_arg_cat = list(table = table), measure_arg_bin = list(table = table), ...){
+                          measure_arg_cat = list(table = table), measure_arg_bin = list(table = table), dis_arg = list("euclidean", "manhattan", "gower"), ...){
   abc <- function(...){
     library(ddiff)
-    d = generate_test_data(50)
+    d = generate_test_data(100)
     dat1 = d$records_added$new
     dat2 = d$records_added$old
     key = "id"
@@ -36,17 +37,45 @@ get_variable_multi_stat <- function(dat1, dat2, key,
     prcomp(dat1[, unlist(objective$data_1$continous)])
     #pilots.pca
     dat2_svd = svd(cov(dat2[, unlist(objective$data_2$continous)]))
+    abcd = rbind(dat1[, unlist(objective$data_1$continous)[1]], dat2[, unlist(objective$data_2$continous)[1]])
+    #gower distance
+    library(gower)
+    gower_dist(t(dat1), t(dat2))
+    edit(gower_dist)
+    ?gower_work
+    ??gower_work
+
+    library(StatMatch)
+
+    x1 <- as.logical(rbinom(10,1,0.5))
+    x2 <- sample(letters, 10, replace=TRUE)
+    x3 <- rnorm(10)
+    x4 <- ordered(cut(x3, -4:4, include.lowest=TRUE))
+    xx <- data.frame(x1, x2, x3, x4, stringsAsFactors = FALSE)
+
+    # matrix of distances between observations in xx
+    dx <- gower.dist(xx)
+    head(dx)
+
+    # matrix of distances between first obs. in xx
+    # and the remaining ones
+    abc <- gower.dist(data.x= dat1, data.y= dat2)
+    abc
+    rowMeans(abc[101:200, 1:100])
+    (rowMeans(abc[101:200, 1:100]) - mean(rowMeans(abc[101:200, 1:100])) )/ sum(rowMeans(abc[101:200, 1:100]))
+    abc <- gower.dist(data.x= t(dat1[sample(1:200, 100), ]), data.y= t(dat2))
+    abc
+    #diagonal
+
+    #continuous distance
+    comp.cont(data.A = dat1, data.B = dat2, xlab.A = "nm_1")
+    #categorical distance
+    comp.prop(p1=table(dat1$cat_1), p2=table(dat2$cat_1), n1=nrow(dat1), n2=nrow(dat2), ref=FALSE)
+
+
+
   }
-  objective = get_variable_class(dat1, dat2,  key)
-  diff_result <- NULL
-  diff_result_con <- NULL
-  for (arg in names(measure_arg_con)) {
-    #arg = "cov"
-    con_varcovar1 <- measure_arg_con[[arg]](data.frame(dat1[, unlist(objective$data_1$continous)]))
-    con_varcovar2 <- measure_arg_con[[arg]](data.frame(dat2[, unlist(objective$data_2$continous)]))
-    diff_result_con <- append(diff_result_con , list(arg = list(con_varcovar1, con_varcovar1)))
-  }
-  names(diff_result_con) <- names(measure_arg_con)
+
   abc1 <- function(){
     diff_result_cat <- NULL
     for (arg in names(measure_arg_cat)) {
@@ -68,6 +97,18 @@ get_variable_multi_stat <- function(dat1, dat2, key,
     }
     colnames(diff_result_bin) <- c(unlist(objective$data_2$binary), "data1", "data2")
   }
+
+  objective = get_variable_class(dat1, dat2,  key)
+  diff_result <- NULL
+  diff_result_con <- NULL
+  for (arg in names(measure_arg_con)) {
+    #arg = "cov"
+    con_varcovar1 <- measure_arg_con[[arg]](data.frame(dat1[, unlist(objective$data_1$continous)]))
+    con_varcovar2 <- measure_arg_con[[arg]](data.frame(dat2[, unlist(objective$data_2$continous)]))
+    diff_result_con <- append(diff_result_con , list(arg = list(con_varcovar1, con_varcovar1)))
+  }
+  names(diff_result_con) <- names(measure_arg_con)
+
   #, result_cat = diff_result_cat, result_bin = diff_result_bin
    return(list(result_con = diff_result_con))
 }

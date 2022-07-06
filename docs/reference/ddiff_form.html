@@ -40,6 +40,9 @@ whether the given two datasets are equivalent in R memory
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/LR.html">literature review</a>
+    </li>
+    <li>
       <a href="../articles/multivaraite.html">beyond univariate ddiff</a>
     </li>
     <li>
@@ -105,8 +108,11 @@ whether the given two datasets are equivalent in R memory
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
 <span class="r-in"><span class="va">n</span> <span class="op">=</span> <span class="fl">100</span></span>
-<span class="r-in"><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="generate_test_data.html">generate_test_data</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">#result = ddiff_form(d$identical$new, d$identical$old, "id")</span></span>
+<span class="r-in"><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="generate_test_data1.html">generate_test_data1</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span class="r-in"><span class="co">#result = ddiff_form(d$identical$new, d$identical$old, c("id_1", "id_2"))</span></span>
+<span class="r-in"><span class="co">#dat1 = d$identical$new</span></span>
+<span class="r-in"><span class="co">#dat2 = d$identical$old</span></span>
+<span class="r-in"><span class="co">#key = c("id_1", "id_2")</span></span>
 <span class="r-in"><span class="co">#result$class_match</span></span>
 <span class="r-in"><span class="co">#result$column_match</span></span>
 <span class="r-in"><span class="co">#result$row_match</span></span>

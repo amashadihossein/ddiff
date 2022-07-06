@@ -50,6 +50,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/LR.html">literature review</a>
+    </li>
+    <li>
       <a href="../articles/multivaraite.html">beyond univariate ddiff</a>
     </li>
     <li>
@@ -84,6 +87,10 @@
 
     
     
+<p>This vigette was partally based on the github page given below</p>
+<blockquote>
+<p>“Introduction to Data diff package.” (<a href="https://amashadihossein.github.io/ddiff/" class="external-link">link</a>)</p>
+</blockquote>
 <div class="section level3">
 <h3 id="installing-the-package">Installing the package<a class="anchor" aria-label="anchor" href="#installing-the-package"></a>
 </h3>
@@ -108,7 +115,9 @@ identical</p>
 <code class="sourceCode R"><span class="va">ddiff_rpt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ddiff_form.html">ddiff_form</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">identical</span><span class="op">$</span><span class="va">new</span>, <span class="va">d</span><span class="op">$</span><span class="va">identical</span><span class="op">$</span><span class="va">old</span>, <span class="st">"id"</span><span class="op">)</span></code></pre></div>
 <p>The structure of the output is a list which contains 7 indicator
 given below and <code><a href="https://mayoverse.github.io/arsenal/reference/comparedf.html" class="external-link">arsenal::comparedf</a></code> object. For more details
-and useage of the <code><a href="https://mayoverse.github.io/arsenal/reference/comparedf.html" class="external-link">arsenal::comparedf</a></code>, please refer <a href="https://cran.r-project.org/web/packages/arsenal/vignettes/comparedf.html" class="external-link">vignettes</a>.</p>
+and useage of the <code><a href="https://mayoverse.github.io/arsenal/reference/comparedf.html" class="external-link">arsenal::comparedf</a></code>, please refer <a href="https://cran.r-project.org/web/packages/arsenal/vignettes/comparedf.html" class="external-link">vignettes</a>
+for more detail regarding generating SAS-like report from comparedf
+object.</p>
 <p>The each indicator is corresponding to the following criterion:</p>
 <ul>
 <li>When data tables being compared are identical : identical</li>
@@ -118,13 +127,9 @@ attributes_match</li>
 <li>When attributes change but colnames are the same : column_match</li>
 <li>When attributes change and colnames are different too :
 row_match</li>
-<li>When new records are added to a table : class_match</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ddiff_rpt</span><span class="op">[</span><span class="op">-</span><span class="fl">8</span><span class="op">]</span>
-<span class="co">#&gt; $class_match</span>
-<span class="co">#&gt; [1] FALSE</span>
-<span class="co">#&gt; </span>
+<code class="sourceCode R"><span class="va">ddiff_rpt</span><span class="op">[</span><span class="op">-</span><span class="fl">7</span><span class="op">]</span>
 <span class="co">#&gt; $column_match</span>
 <span class="co">#&gt; [1] TRUE</span>
 <span class="co">#&gt; </span>
@@ -142,7 +147,7 @@ row_match</li>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $message</span>
 <span class="co">#&gt; [1] "Data table contents and attr names match: differences are limited to row or col orders"</span>
-<span class="va">ddiff_rpt</span><span class="op">[</span><span class="fl">8</span><span class="op">]</span>
+<span class="va">ddiff_rpt</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span>
 <span class="co">#&gt; $comparedf</span>
 <span class="co">#&gt; Compare Object</span>
 <span class="co">#&gt; </span>
@@ -159,35 +164,234 @@ row_match</li>
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ddiff_rpt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ddiff_form.html">ddiff_form</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">order</span><span class="op">$</span><span class="va">new</span>, <span class="va">d</span><span class="op">$</span><span class="va">order</span><span class="op">$</span><span class="va">old</span>, <span class="st">"id"</span><span class="op">)</span>
-<span class="va">ddiff_rpt</span></code></pre></div>
+<span class="va">ddiff_rpt</span>
+<span class="co">#&gt; $column_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $row_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $attributes_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $info_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $identical</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $message</span>
+<span class="co">#&gt; [1] "Data table contents and attr names match: differences are limited to row or col orders"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $comparedf</span>
+<span class="co">#&gt; Compare Object</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Function Call: </span>
+<span class="co">#&gt; arsenal::comparedf(x = dat1, y = dat2)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Shared: 6 non-by variables and 50 observations.</span>
+<span class="co">#&gt; Not shared: 0 variables and 0 observations.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Differences found in 6/6 variables compared.</span>
+<span class="co">#&gt; 0 variables compared have non-identical attributes.</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="when-attributes-are-the-same-but-content-change">When attributes are the same but content change<a class="anchor" aria-label="anchor" href="#when-attributes-are-the-same-but-content-change"></a>
 </h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ddiff_rpt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ddiff_form.html">ddiff_form</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">attrs</span><span class="op">$</span><span class="va">same</span><span class="op">$</span><span class="va">new</span>, <span class="va">d</span><span class="op">$</span><span class="va">attrs</span><span class="op">$</span><span class="va">same</span><span class="op">$</span><span class="va">old</span>, <span class="st">"id"</span><span class="op">)</span>
-<span class="va">ddiff_rpt</span></code></pre></div>
+<span class="va">ddiff_rpt</span>
+<span class="co">#&gt; $column_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $row_match</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $attributes_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $info_match</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $identical</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $message</span>
+<span class="co">#&gt;  [1] "Column of structure(list(nm_1 = c(-0.289066933606412, 0.388581229632553,  and structure(list(nm_1 = c(-1.18945374525972, 0.388581229632553,  are different"                                                 </span>
+<span class="co">#&gt;  [2] "Column of -0.344333349210725, -0.547896138418295, 0.980662215750192, -0.236646007272852,  and -0.344333349210725, -0.547896138418295, 0.980662215750192, -0.236646007272852,  are different"                </span>
+<span class="co">#&gt;  [3] "Column of 0.809739704347715, -0.744779528664041, -0.259787013127099, -0.183083830410215,  and 0.809739704347715, -0.744779528664041, -0.259787013127099, -0.183083830410215,  are different"                </span>
+<span class="co">#&gt;  [4] "Column of 0.518629987612905, 0.883465100720314, 0.589829072632608, -0.196704650843791,  and 0.518629987612905, 0.883465100720314, 0.589829072632608, -0.196704650843791,  are different"                    </span>
+<span class="co">#&gt;  [5] "Column of 0.659593777928567, -0.260584627446975, -0.572505509650733, 1.4065584069618,  and 0.659593777928567, -0.260584627446975, -0.572505509650733, 1.4065584069618,  are different"                      </span>
+<span class="co">#&gt;  [6] "Column of 0.504270507826227, -0.700280925685351, 1.42342347886737, -1.04265811985749,  and 0.504270507826227, -0.700280925685351, 1.42342347886737, -1.04265811985749,  are different"                      </span>
+<span class="co">#&gt;  [7] "Column of 0.00116919469366972, 1.0904551661121, -0.998715247417811, 0.534829992287411,  and 0.00116919469366972, 1.0904551661121, -0.998715247417811, 0.534829992287411,  are different"                    </span>
+<span class="co">#&gt;  [8] "Column of -0.123767951685906, 2.1193033079271, -1.51347587392399, 0.255194870622439,  and -0.123767951685906, 2.1193033079271, -1.51347587392399, 0.255194870622439,  are different"                        </span>
+<span class="co">#&gt;  [9] "Column of 1.50474143843066, -0.390080474700884, 0.579358170126725, 0.21035583968694,  and 1.50474143843066, -0.390080474700884, 0.579358170126725, 0.21035583968694,  are different"                        </span>
+<span class="co">#&gt; [10] "Column of 0.944042775533132, -1.82669323361108, 2.86973360364368, -2.36852121820956,  and 0.944042775533132, -1.82669323361108, 2.86973360364368, -2.36852121820956,  are different"                        </span>
+<span class="co">#&gt; [11] "Column of -0.590399248726551, -0.96886896570212, 0.187276770419777, 1.91371937776301,  and -0.590399248726551, -0.96886896570212, 0.187276770419777, 1.91371937776301,  are different"                      </span>
+<span class="co">#&gt; [12] "Column of -0.622659437911908, -1.06418388666768, -0.342270731381081, -0.101322232566915,  and -0.622659437911908, -1.06418388666768, -0.342270731381081, -0.101322232566915,  are different"                </span>
+<span class="co">#&gt; [13] "Column of 0.57839323199544, 0.827648041185376, 1.31117520975965, 0.178359730550721 and 0.57839323199544, 0.827648041185376, 1.31117520975965, 0.178359730550721 are different"                              </span>
+<span class="co">#&gt; [14] "Column of ), nm_2 = c(1.18910975905401, -0.575916395868676, -0.702879493844057,  and ), nm_2 = c(1.70366970475735, -0.575916395868676, -0.702879493844057,  are different"                                  </span>
+<span class="co">#&gt; [15] "Column of -0.259008188391139, 1.92396651487414, -0.216279912089357, -1.14170979883512,  and -0.259008188391139, 1.92396651487414, -0.216279912089357, -1.14170979883512,  are different"                    </span>
+<span class="co">#&gt; [16] "Column of 0.784789780435393, -1.15117205850795, 0.237957395089266, 0.798687248627529,  and 0.784789780435393, -1.15117205850795, 0.237957395089266, 0.798687248627529,  are different"                      </span>
+<span class="co">#&gt; [17] "Column of 0.190510256326919, -0.329143591272432, 0.77244722921198, -1.45191776874461,  and 0.190510256326919, -0.329143591272432, 0.77244722921198, -1.45191776874461,  are different"                      </span>
+<span class="co">#&gt; [18] "Column of 0.95574339040245, 0.467099534107168, -0.466286691584936, -1.48456770093309,  and 0.95574339040245, 0.467099534107168, -0.466286691584936, -1.48456770093309,  are different"                      </span>
+<span class="co">#&gt; [19] "Column of -1.00616440828226, -0.450999227519978, 0.333059485592, 0.503493471592556,  and -1.00616440828226, -0.450999227519978, 0.333059485592, 0.503493471592556,  are different"                          </span>
+<span class="co">#&gt; [20] "Column of 0.759737772600287, -1.82863288234145, 0.51973937707804, -0.840957975575131,  and 0.759737772600287, -1.82863288234145, 0.51973937707804, -0.840957975575131,  are different"                      </span>
+<span class="co">#&gt; [21] "Column of 0.82337591323595, -1.99928906938354, 0.0714690956043856, -0.25453721656159,  and 0.82337591323595, -1.99928906938354, 0.0714690956043856, -0.25453721656159,  are different"                      </span>
+<span class="co">#&gt; [22] "Column of -0.982423624979388, 0.225184751349212, -1.80286949267612, 1.04963473503383,  and -0.982423624979388, 0.225184751349212, -1.80286949267612, 1.04963473503383,  are different"                      </span>
+<span class="co">#&gt; [23] "Column of -0.142638981105678, 1.91889788833356, 0.4604216488688, 0.61370787057994,  and -0.142638981105678, 1.91889788833356, 0.4604216488688, 0.61370787057994,  are different"                            </span>
+<span class="co">#&gt; [24] "Column of 0.145691515446964, -0.643634170405842, 0.862627721034761, -0.760293338183134,  and 0.145691515446964, -0.643634170405842, 0.862627721034761, -0.760293338183134,  are different"                  </span>
+<span class="co">#&gt; [25] "Column of -1.91497470020142, -2.00440017072526, 0.781136817167936, -0.885683156402335,  and -1.91497470020142, -2.00440017072526, 0.781136817167936, -0.885683156402335,  are different"                    </span>
+<span class="co">#&gt; [26] "Column of 1.66887164572416, -0.119830188679197, 0.0219305165927636), nm_3 = c(-1.07988400465162,  and 1.66887164572416, -0.119830188679197, 0.0219305165927636), nm_3 = c(0.791012979854215,  are different"</span>
+<span class="co">#&gt; [27] "Column of 2.45765794258451, 1.23635983579615, 0.140576845424388, 0.473579067886365,  and 2.45765794258451, 1.23635983579615, 0.140576845424388, 0.473579067886365,  are different"                          </span>
+<span class="co">#&gt; [28] "Column of 0.913911561901409, 1.08870815837542, -0.24688452844631, -0.108883463553795,  and 0.913911561901409, 1.08870815837542, -0.24688452844631, -0.108883463553795,  are different"                      </span>
+<span class="co">#&gt; [29] "Column of 0.732828973015261, -1.2090700393078, -0.280212037960508, 0.336189999032178,  and 0.732828973015261, -1.2090700393078, -0.280212037960508, 0.336189999032178,  are different"                      </span>
+<span class="co">#&gt; [30] "Column of -1.8765043527064, -0.368227133881191, 1.11448179485904, 1.20711112964343,  and -1.8765043527064, -0.368227133881191, 1.11448179485904, 1.20711112964343,  are different"                          </span>
+<span class="co">#&gt; [31] "Column of 1.39344193788641, -0.250616766438235, -0.642881052516167, 0.445479753013766,  and 1.39344193788641, -0.250616766438235, -0.642881052516167, 0.445479753013766,  are different"                    </span>
+<span class="co">#&gt; [32] "Column of 0.0880596076834208, 2.70272575916824, -0.436344593218605, 1.6966142506641,  and 0.0880596076834208, 2.70272575916824, -0.436344593218605, 1.6966142506641,  are different"                        </span>
+<span class="co">#&gt; [33] "Column of 0.224445760601301, 1.2433718379322, 1.19571938626329, -1.75833073844778,  and 0.224445760601301, 1.2433718379322, 1.19571938626329, -1.75833073844778,  are different"                            </span>
+<span class="co">#&gt; [34] "Column of 0.291867738108087, 1.72745544990343, 0.0184020794949199, -0.538701743249227,  and 0.291867738108087, 1.72745544990343, 0.0184020794949199, -0.538701743249227,  are different"                    </span>
+<span class="co">#&gt; [35] "Column of -0.811543819637848, 1.07939672767191, 0.716272703378641, 0.340828470205337,  and -0.811543819637848, 1.07939672767191, 0.716272703378641, 0.340828470205337,  are different"                      </span>
+<span class="co">#&gt; [36] "Column of 0.269287084029074, 0.93271577103662, 1.27078361267538, 1.72521941559036,  and 0.269287084029074, 0.93271577103662, 1.27078361267538, 1.72521941559036,  are different"                            </span>
+<span class="co">#&gt; [37] "Column of 0.788636386103786, 0.1561623609621, 0.589353135917267, 0.706061799133559,  and 0.788636386103786, 0.1561623609621, 0.589353135917267, 0.706061799133559,  are different"                          </span>
+<span class="co">#&gt; [38] "Column of -0.861400332299463, -0.694242318767514, -0.0877451269523678,  and -0.861400332299463, -0.694242318767514, -0.0877451269523678,  are different"                                                    </span>
+<span class="co">#&gt; [39] "Column of -1.28299275517621, -0.286459841388369), cat_1 = structure(c(2L,  and -1.28299275517621, -0.286459841388369), cat_1 = structure(c(2L,  are different"                                              </span>
+<span class="co">#&gt; [40] "Column of 1L, 3L, 1L, 1L, 3L, 3L, 3L, 3L, 1L, 2L, 2L, 3L, 3L, 3L, 1L, 1L,  and 1L, 3L, 1L, 1L, 3L, 3L, 3L, 3L, 1L, 2L, 2L, 3L, 3L, 3L, 1L, 1L,  are different"                                              </span>
+<span class="co">#&gt; [41] "Column of 3L, 2L, 1L, 2L, 1L, 1L, 1L, 3L, 3L, 3L, 2L, 3L, 3L, 2L, 2L, 1L,  and 3L, 2L, 1L, 2L, 1L, 1L, 1L, 3L, 3L, 3L, 2L, 3L, 3L, 2L, 2L, 1L,  are different"                                              </span>
+<span class="co">#&gt; [42] "Column of 3L, 3L, 3L, 1L, 1L, 3L, 1L, 2L, 2L, 3L, 3L, 2L, 1L, 3L, 2L, 1L,  and 3L, 3L, 3L, 1L, 1L, 3L, 1L, 2L, 2L, 3L, 3L, 2L, 1L, 3L, 2L, 1L,  are different"                                              </span>
+<span class="co">#&gt; [43] "Column of 2L), levels = c(\"a\", \"b\", \"c\"), class = \"factor\"), bin_1 = structure(c(1L,  and 2L), levels = c(\"a\", \"b\", \"c\"), class = \"factor\"), bin_1 = structure(c(2L,  are different"        </span>
+<span class="co">#&gt; [44] "Column of 1L, 1L, 1L, 2L, 1L, 1L, 2L, 1L, 1L, 2L, 2L, 2L, 2L, 2L, 1L, 1L,  and 1L, 1L, 1L, 2L, 1L, 1L, 2L, 1L, 1L, 2L, 2L, 2L, 2L, 2L, 1L, 1L,  are different"                                              </span>
+<span class="co">#&gt; [45] "Column of 1L, 1L, 1L, 2L, 2L, 1L, 2L, 2L, 2L, 2L, 1L, 1L, 1L, 2L, 2L, 1L,  and 1L, 1L, 1L, 2L, 2L, 1L, 2L, 2L, 2L, 2L, 1L, 1L, 1L, 2L, 2L, 1L,  are different"                                              </span>
+<span class="co">#&gt; [46] "Column of 2L, 2L, 1L, 1L, 2L, 2L, 1L, 2L, 2L, 1L, 1L, 2L, 1L, 2L, 1L, 1L,  and 2L, 2L, 1L, 1L, 2L, 2L, 1L, 2L, 2L, 1L, 1L, 2L, 1L, 2L, 1L, 1L,  are different"                                              </span>
+<span class="co">#&gt; [47] "Column of 1L), levels = c(\"N\", \"Y\"), class = \"factor\"), id = c(\"id_01\",  and 1L), levels = c(\"N\", \"Y\"), class = \"factor\"), id = c(\"id_1\",  are different"                                   </span>
+<span class="co">#&gt; [48] "Column of \"id_2\", \"id_3\", \"id_4\", \"id_5\", \"id_6\", \"id_7\", \"id_8\", \"id_9\",  and \"id_2\", \"id_3\", \"id_4\", \"id_5\", \"id_6\", \"id_7\", \"id_8\", \"id_9\",  are different"              </span>
+<span class="co">#&gt; [49] "Column of \"id_10\", \"id_11\", \"id_12\", \"id_13\", \"id_14\", \"id_15\", \"id_16\",  and \"id_10\", \"id_11\", \"id_12\", \"id_13\", \"id_14\", \"id_15\", \"id_16\",  are different"                    </span>
+<span class="co">#&gt; [50] "Column of \"id_17\", \"id_18\", \"id_19\", \"id_20\", \"id_21\", \"id_22\", \"id_23\",  and \"id_17\", \"id_18\", \"id_19\", \"id_20\", \"id_21\", \"id_22\", \"id_23\",  are different"                    </span>
+<span class="co">#&gt; [51] "Column of \"id_24\", \"id_25\", \"id_26\", \"id_27\", \"id_28\", \"id_29\", \"id_30\",  and \"id_24\", \"id_25\", \"id_26\", \"id_27\", \"id_28\", \"id_29\", \"id_30\",  are different"                    </span>
+<span class="co">#&gt; [52] "Column of \"id_31\", \"id_32\", \"id_33\", \"id_34\", \"id_35\", \"id_36\", \"id_37\",  and \"id_31\", \"id_32\", \"id_33\", \"id_34\", \"id_35\", \"id_36\", \"id_37\",  are different"                    </span>
+<span class="co">#&gt; [53] "Column of \"id_38\", \"id_39\", \"id_40\", \"id_41\", \"id_42\", \"id_43\", \"id_44\",  and \"id_38\", \"id_39\", \"id_40\", \"id_41\", \"id_42\", \"id_43\", \"id_44\",  are different"                    </span>
+<span class="co">#&gt; [54] "Column of \"id_45\", \"id_46\", \"id_47\", \"id_48\", \"id_49\", \"id_50\")), row.names = c(NA,  and \"id_45\", \"id_46\", \"id_47\", \"id_48\", \"id_49\", \"id_50\")), row.names = c(NA,  are different"  </span>
+<span class="co">#&gt; [55] "Column of -50L), class = \"data.frame\") and -50L), class = \"data.frame\") are different"                                                                                                                  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $comparedf</span>
+<span class="co">#&gt; Compare Object</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Function Call: </span>
+<span class="co">#&gt; arsenal::comparedf(x = dat1, y = dat2)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Shared: 6 non-by variables and 50 observations.</span>
+<span class="co">#&gt; Not shared: 0 variables and 0 observations.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Differences found in 5/6 variables compared.</span>
+<span class="co">#&gt; 0 variables compared have non-identical attributes.</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="when-attributes-change-but-colnames-are-the-same">When attributes change but colnames are the same<a class="anchor" aria-label="anchor" href="#when-attributes-change-but-colnames-are-the-same"></a>
 </h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ddiff_rpt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ddiff_form.html">ddiff_form</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">attrs</span><span class="op">$</span><span class="va">different</span><span class="op">$</span><span class="va">col_same</span><span class="op">$</span><span class="va">new</span>, <span class="va">d</span><span class="op">$</span><span class="va">attrs</span><span class="op">$</span><span class="va">different</span><span class="op">$</span><span class="va">col_same</span><span class="op">$</span><span class="va">old</span>, <span class="st">"id"</span><span class="op">)</span>
-<span class="va">ddiff_rpt</span></code></pre></div>
+<span class="va">ddiff_rpt</span>
+<span class="co">#&gt; $column_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $row_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $attributes_match</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $info_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $identical</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $message</span>
+<span class="co">#&gt; [1] "Data table contents and attr names match: differences are limited to row or col orders"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $comparedf</span>
+<span class="co">#&gt; Compare Object</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Function Call: </span>
+<span class="co">#&gt; arsenal::comparedf(x = dat1, y = dat2)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Shared: 6 non-by variables and 50 observations.</span>
+<span class="co">#&gt; Not shared: 0 variables and 0 observations.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Differences found in 0/6 variables compared.</span>
+<span class="co">#&gt; 0 variables compared have non-identical attributes.</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="when-attributes-change-and-colnames-are-different-too">When attributes change and colnames are different too<a class="anchor" aria-label="anchor" href="#when-attributes-change-and-colnames-are-different-too"></a>
 </h3>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ddiff_rpt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ddiff_form.html">ddiff_form</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">attrs</span><span class="op">$</span><span class="va">different</span><span class="op">$</span><span class="va">col_diff</span><span class="op">$</span><span class="va">new</span>, <span class="va">d</span><span class="op">$</span><span class="va">attrs</span><span class="op">$</span><span class="va">different</span><span class="op">$</span><span class="va">col_diff</span><span class="op">$</span><span class="va">old</span>, <span class="st">"id"</span><span class="op">)</span>
-<span class="va">ddiff_rpt</span></code></pre></div>
+<span class="va">ddiff_rpt</span>
+<span class="co">#&gt; $column_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $row_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $attributes_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $info_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $identical</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $message</span>
+<span class="co">#&gt; [1] "Data table contents and attr names match: differences are limited to row or col orders"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $comparedf</span>
+<span class="co">#&gt; Compare Object</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Function Call: </span>
+<span class="co">#&gt; arsenal::comparedf(x = dat1, y = dat2)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Shared: 6 non-by variables and 50 observations.</span>
+<span class="co">#&gt; Not shared: 1 variables and 0 observations.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Differences found in 0/6 variables compared.</span>
+<span class="co">#&gt; 0 variables compared have non-identical attributes.</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="when-new-records-are-added-to-a-table">When new records are added to a table<a class="anchor" aria-label="anchor" href="#when-new-records-are-added-to-a-table"></a>
 </h3>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ddiff_rpt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ddiff_form.html">ddiff_form</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">records_added</span><span class="op">$</span><span class="va">new</span>, <span class="va">d</span><span class="op">$</span><span class="va">records_added</span><span class="op">$</span><span class="va">old</span>, <span class="st">"id"</span><span class="op">)</span>
-<span class="va">ddiff_rpt</span></code></pre></div>
+<span class="va">ddiff_rpt</span>
+<span class="co">#&gt; $column_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $row_match</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $attributes_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $info_match</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $identical</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $message</span>
+<span class="co">#&gt; [1] "Data table contents and attr names match: differences are limited to row or col orders"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $comparedf</span>
+<span class="co">#&gt; Compare Object</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Function Call: </span>
+<span class="co">#&gt; arsenal::comparedf(x = dat1, y = dat2)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Shared: 6 non-by variables and 50 observations.</span>
+<span class="co">#&gt; Not shared: 0 variables and 50 observations.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Differences found in 0/6 variables compared.</span>
+<span class="co">#&gt; 0 variables compared have non-identical attributes.</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -302,226 +506,10 @@ funciton.</p>
 <span class="va">result</span><span class="op">$</span><span class="va">result_bin</span>
 <span class="co">#&gt;   bin_1 data1 data2</span>
 <span class="co">#&gt; 1     N    26    26</span>
-<span class="co">#&gt; 2     Y    24    24</span></code></pre></div>
+<span class="co">#&gt; 2     Y    24    24</span>
+
+<span class="co">#You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="styles">Styles<a class="anchor" aria-label="anchor" href="#styles"></a>
-</h3>
-<p>The <code>html_vignette</code> template includes a basic CSS theme.
-To override this theme you can specify your own CSS in the document
-metadata as follows:</p>
-<pre><code><span class="va">output</span><span class="op">:</span> 
-  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="va"><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_vignette.html" class="external-link">html_vignette</a></span><span class="op">:</span>
-    <span class="va">css</span><span class="op">:</span> <span class="va">mystyles.css</span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="figures">Figures<a class="anchor" aria-label="anchor" href="#figures"></a>
-</h3>
-<p>The figure sizes have been customised so that you can easily put two
-images side-by-side.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">10</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
-<p><img src="quick_start_files/figure-html/unnamed-chunk-15-1.png" width="700"><img src="quick_start_files/figure-html/unnamed-chunk-15-2.png" width="700"></p>
-<p>You can enable figure captions by <code>fig_caption: yes</code> in
-YAML:</p>
-<pre><code><span class="va">output</span><span class="op">:</span>
-  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="va"><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_vignette.html" class="external-link">html_vignette</a></span><span class="op">:</span>
-    <span class="va">fig_caption</span><span class="op">:</span> <span class="va">yes</span></code></pre>
-<p>Then you can use the chunk option
-<code>fig.cap = "Your figure caption."</code> in
-<strong>knitr</strong>.</p>
-</div>
-<div class="section level3">
-<h3 id="more-examples">More Examples<a class="anchor" aria-label="anchor" href="#more-examples"></a>
-</h3>
-<p>You can write math expressions, e.g. <span class="math inline">\(Y =
-X\beta + \epsilon\)</span>, footnotes<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, and tables, e.g. using
-<code><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">knitr::kable()</a></code>.</p>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="25%">
-<col width="7%">
-<col width="5%">
-<col width="8%">
-<col width="5%">
-<col width="7%">
-<col width="8%">
-<col width="8%">
-<col width="4%">
-<col width="4%">
-<col width="7%">
-<col width="7%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">mpg</th>
-<th align="right">cyl</th>
-<th align="right">disp</th>
-<th align="right">hp</th>
-<th align="right">drat</th>
-<th align="right">wt</th>
-<th align="right">qsec</th>
-<th align="right">vs</th>
-<th align="right">am</th>
-<th align="right">gear</th>
-<th align="right">carb</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Mazda RX4</td>
-<td align="right">21.0</td>
-<td align="right">6</td>
-<td align="right">160.0</td>
-<td align="right">110</td>
-<td align="right">3.90</td>
-<td align="right">2.620</td>
-<td align="right">16.46</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr class="even">
-<td align="left">Mazda RX4 Wag</td>
-<td align="right">21.0</td>
-<td align="right">6</td>
-<td align="right">160.0</td>
-<td align="right">110</td>
-<td align="right">3.90</td>
-<td align="right">2.875</td>
-<td align="right">17.02</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr class="odd">
-<td align="left">Datsun 710</td>
-<td align="right">22.8</td>
-<td align="right">4</td>
-<td align="right">108.0</td>
-<td align="right">93</td>
-<td align="right">3.85</td>
-<td align="right">2.320</td>
-<td align="right">18.61</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">Hornet 4 Drive</td>
-<td align="right">21.4</td>
-<td align="right">6</td>
-<td align="right">258.0</td>
-<td align="right">110</td>
-<td align="right">3.08</td>
-<td align="right">3.215</td>
-<td align="right">19.44</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">Hornet Sportabout</td>
-<td align="right">18.7</td>
-<td align="right">8</td>
-<td align="right">360.0</td>
-<td align="right">175</td>
-<td align="right">3.15</td>
-<td align="right">3.440</td>
-<td align="right">17.02</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">Valiant</td>
-<td align="right">18.1</td>
-<td align="right">6</td>
-<td align="right">225.0</td>
-<td align="right">105</td>
-<td align="right">2.76</td>
-<td align="right">3.460</td>
-<td align="right">20.22</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">Duster 360</td>
-<td align="right">14.3</td>
-<td align="right">8</td>
-<td align="right">360.0</td>
-<td align="right">245</td>
-<td align="right">3.21</td>
-<td align="right">3.570</td>
-<td align="right">15.84</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">4</td>
-</tr>
-<tr class="even">
-<td align="left">Merc 240D</td>
-<td align="right">24.4</td>
-<td align="right">4</td>
-<td align="right">146.7</td>
-<td align="right">62</td>
-<td align="right">3.69</td>
-<td align="right">3.190</td>
-<td align="right">20.00</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">Merc 230</td>
-<td align="right">22.8</td>
-<td align="right">4</td>
-<td align="right">140.8</td>
-<td align="right">95</td>
-<td align="right">3.92</td>
-<td align="right">3.150</td>
-<td align="right">22.90</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">Merc 280</td>
-<td align="right">19.2</td>
-<td align="right">6</td>
-<td align="right">167.6</td>
-<td align="right">123</td>
-<td align="right">3.92</td>
-<td align="right">3.440</td>
-<td align="right">18.30</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-</tbody>
-</table>
-<p>Also a quote using <code>&gt;</code>:</p>
-<blockquote>
-<p>“He who gives up [code] safety for [code] speed deserves neither.”
-(<a href="https://twitter.com/hadleywickham/status/504368538874703872" class="external-link">via</a>)</p>
-</blockquote>
-</div>
-</div>
-<div class="footnotes footnotes-end-of-document">
-<hr>
-<ol>
-<li id="fn1"><p>A footnote here.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
   </div>
 

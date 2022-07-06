@@ -1,0 +1,77 @@
+---
+title: "literature review"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{literature review}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## First, take iris data as a reference for comparison. We generate the following test dataset 
+```{r results='markup'}
+df <- iris
+#df_missing and df_extra for less or more columns
+df_missing <- df[, -which(names(df) %in% c("Species"))]
+df_extra <- df
+df_extra[, 6] = "extra"
+#df_class for wrong class
+df_class <- df
+df_class$Species = as.character(df_class$Species)
+#df_order for new order of same set of columns
+df_order <- df[sample(nrow(df)), ]
+
+```
+
+# compareDF::compare_df()
+```{r results='markup'}
+#compareDF::compare_df(df, df_missing, c("Species"))
+#compareDF::compare_df(df, df_extra, c("Species"))
+#compareDF::compare_df(df, df_class, c("Species"))
+#compareDF::compare_df(df, df_order, c("Species"))
+```
+
+# arsenal::comparedf()
+```{r results='markup'}
+arsenal::comparedf(df, df_missing)
+arsenal::comparedf(df, df_extra)
+arsenal::comparedf(df, df_class)
+arsenal::comparedf(df, df_order)
+summary(arsenal::comparedf(df, df_order))
+```
+
+# dplyr::all_equal()
+```{r results='markup'}
+dplyr::all_equal(df, df_missing)
+dplyr::all_equal(df, df_extra)
+dplyr::all_equal(df, df_class)
+dplyr::all_equal(df, df_class, convert = TRUE)
+dplyr::all_equal(df, df_order)
+```
+
+# janitor::compare_df_cols()
+```{r results='markup'}
+janitor::compare_df_cols(df, df_missing, df_extra, df_class, df_order)
+```
+
+# vetr::alike()
+```{r results='markup'}
+vetr::alike(df, df_missing)
+vetr::alike(df, df_extra)
+vetr::alike(df, df_class)
+vetr::alike(df, df_order)
+```
+
+# diffdf::diffdf()
+```{r results='markup'}
+diffdf::diffdf(df, df_missing)
+diffdf::diffdf(df, df_extra)
+diffdf::diffdf(df, df_class)
+diffdf::diffdf(df, df_order)
+```

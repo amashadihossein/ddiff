@@ -4,6 +4,9 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/articles/LR.html</loc>
+  </url>
+  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
@@ -25,7 +28,13 @@
     <loc>/reference/ddiff_form.html</loc>
   </url>
   <url>
+    <loc>/reference/fpca_multi_stat.html</loc>
+  </url>
+  <url>
     <loc>/reference/generate_test_data.html</loc>
+  </url>
+  <url>
+    <loc>/reference/generate_test_data1.html</loc>
   </url>
   <url>
     <loc>/reference/get_variable_class.html</loc>

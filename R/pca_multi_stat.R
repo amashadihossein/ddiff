@@ -45,8 +45,7 @@ pca_multi_stat <- function(dat1, dat2, key, ddiff_objective, ...){
   percent_pca = percent(dat1_svd$d/sum(dat1_svd$d))
   project_data1 = data.matrix(dat1[, unlist(objective$data_1$continous)])%*%dat1_svd$u[,c(1,2)]
   project_data2 = data.matrix(dat2[, unlist(objective$data_2$continous)])%*%dat1_svd$u[,c(1,2)]
-  library(ggplot2)
-  p = ggplot(as.data.frame(project_data1), aes(x=project_data1[,1], y=project_data1[,2], colour = "data1")) +
+  p = ggplot2::ggplot(as.data.frame(project_data1), aes(x=project_data1[,1], y=project_data1[,2], colour = "data1")) +
   xlab(paste0("pc1(", percent_pca[1], ")")) + ylab(paste0("pc2(", percent_pca[2], ")")) + geom_point(size = 5) +
   geom_point(aes(x = project_data2[,1], y = project_data2[,2], colour = "data2"), as.data.frame(project_data2), size = 3) +
   scale_colour_manual(name="legend", values = c(data1 = "black", data2 = "red")) + ggtitle("samples from data2 projected on data1 PC 1,2 space")

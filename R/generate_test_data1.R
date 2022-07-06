@@ -1,4 +1,4 @@
-#' generate two datasets for comparsion
+#' generate ver1 two datasets for comparsion
 #'
 #' @description Generate two datasets for comparsion. The comparison are made on two main aspects : form and information
 #' @param n Number of observations for two datasets
@@ -9,16 +9,21 @@
 #' data.tree::FromListSimple(d)
 #' @export
 #'
-generate_test_data <- function(n){
+generate_test_data1 <- function(n){
   #n = 100
   set.seed(19)
   mtx <- matrix(data = rnorm(n = n * 3), nrow = n, ncol = 3)
   df <- data.frame(mtx)
   colnames(df) <- paste0("nm_",1:3)
   df <- cbind(df,
-              cat_1 = as.factor(sample(x = letters[1:3],size = n,replace = T)),
+              cat_1 = as.factor(sample(x = letters[1:3], size = n, replace = T)),
+              cat_2 = as.factor(sample(x = letters[4:6], size = n, replace = T)),
               bin_1 = as.factor(sample(x = c("Y","N"), size = n, replace = T)),
-              id = paste0("id_",1:nrow(df)))
+              bin_2 = as.factor(sample(x = c("M","F"), size = n, replace = T)),
+              time = rep(1:10, times = 10),
+              id_1 = rep(1:(nrow(df)/4), each = 4),
+              id_2 = rep(1:4, times = 25))
+
 
   test_d <- list()
 
@@ -52,9 +57,13 @@ generate_test_data <- function(n){
   df1 <- data.frame(mtx)
   colnames(df1) <- paste0("nm_",1:3)
   df1 <- cbind(df1,
-               cat_1 = as.factor(sample(x = letters[1:3],size = n,replace = T)),
+               cat_1 = as.factor(sample(x = letters[1:3], size = n, replace = T)),
+               cat_2 = as.factor(sample(x = letters[4:6], size = n, replace = T)),
                bin_1 = as.factor(sample(x = c("Y","N"), size = n, replace = T)),
-               id = paste0("id_",n+1:nrow(df1)))
+               bin_2 = as.factor(sample(x = c("M","F"), size = n, replace = T)),
+               time = rep(1:10, times = 5),
+               id_1 = rep(n+(1:(m/2)), each = 2),
+               id_2 = rep(1:2, times = 25))
 
 
   test_d$records_added$new <- rbind(df,df1)

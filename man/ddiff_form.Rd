@@ -32,8 +32,11 @@ obtain and compare empirical information of row, column and attributes from give
 \examples{
 
 n = 100
-d = generate_test_data(n)
-#result = ddiff_form(d$identical$new, d$identical$old, "id")
+d = generate_test_data1(n)
+#result = ddiff_form(d$identical$new, d$identical$old, c("id_1", "id_2"))
+#dat1 = d$identical$new
+#dat2 = d$identical$old
+#key = c("id_1", "id_2")
 #result$class_match
 #result$column_match
 #result$row_match

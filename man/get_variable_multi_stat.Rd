@@ -11,6 +11,7 @@ get_variable_multi_stat(
   measure_arg_con = list(cov = cov),
   measure_arg_cat = list(table = table),
   measure_arg_bin = list(table = table),
+  dis_arg = list("euclidean", "manhattan", "gower"),
   ...
 )
 }
@@ -26,6 +27,8 @@ get_variable_multi_stat(
 \item{measure_arg_cat}{list of function for summary statistics of categorical response}
 
 \item{measure_arg_bin}{list of function for summary statistics of binary response}
+
+\item{dis_arg}{list of distance for measuring the difference of variables in each datasets}
 
 \item{...}{potential argument to added}
 }
