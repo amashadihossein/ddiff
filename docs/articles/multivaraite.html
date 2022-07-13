@@ -59,6 +59,9 @@
       <a href="../articles/quick_start.html">A Quick Start Guide to R Package ‘ddiff’</a>
     </li>
     <li>
+      <a href="../articles/row_col_diff.html">comprehensive guide to ddiff</a>
+    </li>
+    <li>
       <a href="../articles/why_ddiff.html">Why ddiff</a>
     </li>
   </ul>
@@ -87,9 +90,9 @@
 
     
     
-<div class="section level2">
-<h2 id="multivariate-information-diff">Multivariate information diff<a class="anchor" aria-label="anchor" href="#multivariate-information-diff"></a>
-</h2>
+<div class="section level3">
+<h3 id="multivariate-information-diff">Multivariate information diff<a class="anchor" aria-label="anchor" href="#multivariate-information-diff"></a>
+</h3>
 <p>For each variables in corresponding datasets, we could treat them as
 independent variables or we could view them as correlated variables
 where they are generated under some multivariate distribution. The
@@ -130,6 +133,153 @@ and compare them directly.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/pca_multi_stat.html">pca_multi_stat</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">records_added</span><span class="op">$</span><span class="va">old</span>, <span class="va">d</span><span class="op">$</span><span class="va">records_added</span><span class="op">$</span><span class="va">new</span>,<span class="st">"id"</span>, <span class="va">ddiff_rpt</span><span class="op">)</span></code></pre></div>
 <p><img src="multivaraite_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="generating-data">Generating Data<a class="anchor" aria-label="anchor" href="#generating-data"></a>
+</h2>
+<p>We use the longitudinal dataset that this available with ddiff to
+showcase FPCA and its related functionality. The dataset containing […].
+The data are rather noisy, dense and with a characteristic flat start.
+For that reason in contrast with above we will use a smoothing
+estimating procedure despite having dense data.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_test_functional_data.html">generate_test_functional_data</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
+<span class="co">#&gt; Joining, by = "subjid"</span>
+<span class="co">#&gt; Joining, by = c("t_obs", "grps")</span>
+<span class="co">#&gt; Joining, by = c("t_obs", "subjid")</span>
+<span class="co">#&gt; Joining, by = "subjid"</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="apply-functional-pca">Apply functional PCA<a class="anchor" aria-label="anchor" href="#apply-functional-pca"></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Flies</span> <span class="op">&lt;-</span> <span class="fu">fdapace</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fdapace/man/MakeFPCAInputs.html" class="external-link">MakeFPCAInputs</a></span><span class="op">(</span>IDs <span class="op">=</span> <span class="va">fdata</span><span class="op">$</span><span class="va">subjid</span>, tVec <span class="op">=</span> <span class="va">fdata</span><span class="op">$</span><span class="va">t_obs_n</span>, yVec <span class="op">=</span> <span class="va">fdata</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>
+<span class="va">fpcaObjFlies</span> <span class="op">&lt;-</span> <span class="fu">fdapace</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fdapace/man/FPCA.html" class="external-link">FPCA</a></span><span class="op">(</span><span class="va">Flies</span><span class="op">$</span><span class="va">Ly</span>, <span class="va">Flies</span><span class="op">$</span><span class="va">Lt</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>methodMuCovEst <span class="op">=</span> <span class="st">'smooth'</span>, dataType<span class="op">=</span><span class="st">'Dense'</span>, error <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>Based on the scree-plot we see that the first three components appear
+to encapsulate most of the relevant variation. The number of
+eigencomponents to reach a 99.99% FVE is 11 but just 6 eigencomponents
+are enough to reach a 95.0%. # FPCA in R using fdapace</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.5</span>,<span class="fl">2.5</span>,<span class="fl">2.5</span>,<span class="fl">2.5</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fpcaObjFlies</span><span class="op">)</span></code></pre></div>
+<p><img src="multivaraite_files/figure-html/unnamed-chunk-7-1.png" width="700">
+# outlier detection One can perform outlier detection (Febrero, Galeano,
+and González-Manteiga 2007). Different ranking methodologies (KDE,
+bagplot Hyndman and Shang (2010) or point-wise) are available and can
+potentially identify different aspects of a sample. For example here it
+is notable that the kernel density estimator KDE variant identifies two
+main clusters within the main body of sample.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fObj</span> <span class="op">&lt;-</span> <span class="va">fpcaObjFlies</span>
+<span class="va">fScores1</span> <span class="op">&lt;-</span> <span class="va">fObj</span><span class="op">$</span><span class="va">xiEst</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>
+<span class="va">fScores2</span> <span class="op">&lt;-</span> <span class="va">fObj</span><span class="op">$</span><span class="va">xiEst</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>
+<span class="va">fScoresAll</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">fScores1</span>, <span class="va">fScores2</span><span class="op">)</span>
+
+<span class="va">fhat</span> <span class="op">&lt;-</span> <span class="fu">ks</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ks/man/kde.html" class="external-link">kde</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">fScoresAll</span>, gridsize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>, <span class="fl">400</span><span class="op">)</span>, compute.cont <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">zin</span> <span class="op">=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">estimate</span>
+<span class="va">quickNNeval</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xin</span>,<span class="va">yin</span>, <span class="va">zin</span>, <span class="va">xout</span>, <span class="va">yout</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">xIndices</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span> <span class="va">xout</span>, <span class="kw">function</span><span class="op">(</span><span class="va">myArg</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span> <span class="va">xin</span> <span class="op">-</span> <span class="va">myArg</span><span class="op">)</span> <span class="op">)</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="va">yIndices</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span> <span class="va">yout</span>, <span class="kw">function</span><span class="op">(</span><span class="va">myArg</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span> <span class="va">yin</span> <span class="op">-</span> <span class="va">myArg</span><span class="op">)</span> <span class="op">)</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span> <span class="va">zin</span><span class="op">[</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">xIndices</span>,<span class="va">yIndices</span><span class="op">)</span><span class="op">]</span> <span class="op">)</span>
+<span class="op">}</span>
+<span class="va">qq</span> <span class="op">=</span> <span class="fu">quickNNeval</span><span class="op">(</span>xin <span class="op">=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">eval.points</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, yin <span class="op">=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">eval.points</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, zin <span class="op">=</span> <span class="va">zin</span>, xout <span class="op">=</span> <span class="va">fScores1</span>, yout <span class="op">=</span> <span class="va">fScores2</span><span class="op">)</span>
+<span class="va">xedge</span> <span class="op">=</span> <span class="fl">1.05</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">fScores1</span><span class="op">)</span><span class="op">)</span>
+<span class="va">yedge</span> <span class="op">=</span> <span class="fl">1.05</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">fScores2</span><span class="op">)</span><span class="op">)</span>
+<span class="va">args2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">eval.points</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">eval.points</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, 
+               z <span class="op">=</span> <span class="va">zin</span>, labcex <span class="op">=</span> <span class="fl">1.66</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"blue"</span>,<span class="st">"red"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">95</span>, <span class="fl">99</span><span class="op">)</span><span class="op">]</span>, 
+               labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"50%"</span>, <span class="st">"95%"</span>, <span class="st">"99%"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">args1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>pch <span class="op">=</span> <span class="fl">10</span>, xlab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"FPC"</span>, <span class="fl">1</span>, 
+                                     <span class="st">" scores "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">fObj</span><span class="op">$</span><span class="va">cumFVE</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>, 
+                                     <span class="st">"%"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"FPC"</span>, <span class="fl">2</span>, 
+                                                                  <span class="st">" scores "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">fObj</span><span class="op">$</span><span class="va">cumFVE</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">-</span> 
+                                                                                                               <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="st">"%"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">xedge</span>, <span class="va">xedge</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">yedge</span>, <span class="va">yedge</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">graphics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/graphics/contour.html" class="external-link">contour</a></span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">args2</span>, <span class="va">args1</span><span class="op">)</span><span class="op">)</span>
+  
+<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"#e6e6e6"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fScoresAll</span><span class="op">[</span><span class="va">qq</span> <span class="op">&lt;=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">99</span><span class="op">]</span>, <span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.5</span>, 
+         col <span class="op">=</span> <span class="st">"orange"</span>, pch <span class="op">=</span> <span class="fl">10</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fScoresAll</span><span class="op">[</span><span class="va">qq</span> <span class="op">&gt;</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">99</span><span class="op">]</span> <span class="op">&amp;</span> <span class="va">qq</span> <span class="op">&lt;=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">95</span><span class="op">]</span>, 
+  <span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.33</span>, col <span class="op">=</span> <span class="st">"red"</span>, pch <span class="op">=</span> <span class="fl">10</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fScoresAll</span><span class="op">[</span><span class="va">qq</span> <span class="op">&gt;</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">95</span><span class="op">]</span> <span class="op">&amp;</span> <span class="va">qq</span> <span class="op">&lt;=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">50</span><span class="op">]</span>, 
+  <span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.33</span>, col <span class="op">=</span> <span class="st">"blue"</span>, pch <span class="op">=</span> <span class="fl">10</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fScoresAll</span><span class="op">[</span><span class="va">qq</span> <span class="op">&gt;=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">50</span><span class="op">]</span>, <span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.33</span>, 
+         col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">10</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomleft"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&lt; 50%"</span>, <span class="st">"50%-95%"</span>, <span class="st">"95%-99%"</span>, 
+                         <span class="st">"&gt; 99%"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"blue"</span>, 
+                                                     <span class="st">"red"</span>, <span class="st">"orange"</span><span class="op">)</span>, pt.cex <span class="op">=</span> <span class="fl">1.5</span>, bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"outlier detection for functional PCA with KDE of first two PC scores"</span><span class="op">)</span></code></pre></div>
+<p><img src="multivaraite_files/figure-html/unnamed-chunk-8-1.png" width="700">
+# diff version</p>
+<p>We could also project the new data into the old space of scores.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fdata_new</span> <span class="op">&lt;-</span> <span class="va">fdata</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">)</span>,<span class="op">]</span>
+<span class="va">fdata_new</span> <span class="op">&lt;-</span> <span class="va">fdata_new</span> <span class="op">%&gt;%</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">t_obs_n</span><span class="op">)</span>
+<span class="va">Flies</span> <span class="op">&lt;-</span> <span class="fu">fdapace</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fdapace/man/MakeFPCAInputs.html" class="external-link">MakeFPCAInputs</a></span><span class="op">(</span>IDs <span class="op">=</span> <span class="va">fdata_new</span><span class="op">$</span><span class="va">subjid</span>, tVec <span class="op">=</span> <span class="va">fdata_new</span><span class="op">$</span><span class="va">t_obs_n</span>, yVec <span class="op">=</span> <span class="va">fdata_new</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">fdata_new</span><span class="op">$</span><span class="va">subjid</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 34</span>
+<span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fObj</span>, <span class="va">Flies</span><span class="op">$</span><span class="va">Ly</span>, <span class="va">Flies</span><span class="op">$</span><span class="va">Lt</span>, K<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
+<span class="va">pred</span><span class="op">$</span><span class="va">scores</span>
+<span class="co">#&gt;                [,1]         [,2]</span>
+<span class="co">#&gt;  [1,]  0.0493797727  0.035168054</span>
+<span class="co">#&gt;  [2,]  0.0930988163  0.125884916</span>
+<span class="co">#&gt;  [3,] -0.0213835490 -0.059027957</span>
+<span class="co">#&gt;  [4,]  0.1199629031 -0.016290789</span>
+<span class="co">#&gt;  [5,]  0.1823003310  0.047749972</span>
+<span class="co">#&gt;  [6,]  0.0588917496 -0.034148228</span>
+<span class="co">#&gt;  [7,]  0.0771769301  0.061905468</span>
+<span class="co">#&gt;  [8,]  0.1392378263 -0.058657923</span>
+<span class="co">#&gt;  [9,]  0.1180711993 -0.051044528</span>
+<span class="co">#&gt; [10,]  0.0410797038  0.064200020</span>
+<span class="co">#&gt; [11,]  0.0984147233  0.094471317</span>
+<span class="co">#&gt; [12,]  0.1183115839  0.003282770</span>
+<span class="co">#&gt; [13,]  0.0966311106 -0.041273621</span>
+<span class="co">#&gt; [14,]  0.2715177210 -0.041705469</span>
+<span class="co">#&gt; [15,] -0.1015175369 -0.077080397</span>
+<span class="co">#&gt; [16,] -0.0853718145 -0.045373684</span>
+<span class="co">#&gt; [17,] -0.0122672219  0.097022533</span>
+<span class="co">#&gt; [18,]  0.1155002668 -0.016202099</span>
+<span class="co">#&gt; [19,]  0.0951737191 -0.030976947</span>
+<span class="co">#&gt; [20,]  0.1734187958  0.146412993</span>
+<span class="co">#&gt; [21,]  0.1054328399  0.038100187</span>
+<span class="co">#&gt; [22,] -0.1773920693 -0.062505420</span>
+<span class="co">#&gt; [23,] -0.0006628421  0.008300973</span>
+<span class="co">#&gt; [24,] -0.0795657516  0.091809123</span>
+<span class="co">#&gt; [25,] -0.0876972128 -0.003037348</span>
+<span class="co">#&gt; [26,] -0.0777461055 -0.023241664</span>
+<span class="co">#&gt; [27,]  0.0736162912 -0.094438669</span>
+<span class="co">#&gt; [28,] -0.0115613055 -0.048022006</span>
+<span class="co">#&gt; [29,] -0.0709383218  0.039949839</span>
+<span class="co">#&gt; [30,]  0.0949923391  0.025310444</span>
+<span class="co">#&gt; [31,] -0.0652135809 -0.167272438</span>
+<span class="co">#&gt; [32,]  0.0102627031  0.142780216</span>
+<span class="co">#&gt; [33,]  0.0507613394 -0.013452993</span>
+<span class="co">#&gt; [34,]  0.0681019034 -0.005905464</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">graphics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/graphics/contour.html" class="external-link">contour</a></span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">args2</span>, <span class="va">args1</span><span class="op">)</span><span class="op">)</span>
+  
+<span class="fu"><a href="https://rdrr.io/r/graphics/grid.html" class="external-link">grid</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"#e6e6e6"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fScoresAll</span><span class="op">[</span><span class="va">qq</span> <span class="op">&lt;=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">99</span><span class="op">]</span>, <span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.5</span>, 
+         col <span class="op">=</span> <span class="st">"orange"</span>, pch <span class="op">=</span> <span class="fl">10</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fScoresAll</span><span class="op">[</span><span class="va">qq</span> <span class="op">&gt;</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">99</span><span class="op">]</span> <span class="op">&amp;</span> <span class="va">qq</span> <span class="op">&lt;=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">95</span><span class="op">]</span>, 
+  <span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.33</span>, col <span class="op">=</span> <span class="st">"red"</span>, pch <span class="op">=</span> <span class="fl">10</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fScoresAll</span><span class="op">[</span><span class="va">qq</span> <span class="op">&gt;</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">95</span><span class="op">]</span> <span class="op">&amp;</span> <span class="va">qq</span> <span class="op">&lt;=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">50</span><span class="op">]</span>, 
+  <span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.33</span>, col <span class="op">=</span> <span class="st">"blue"</span>, pch <span class="op">=</span> <span class="fl">10</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fScoresAll</span><span class="op">[</span><span class="va">qq</span> <span class="op">&gt;=</span> <span class="va">fhat</span><span class="op">$</span><span class="va">cont</span><span class="op">[</span><span class="fl">50</span><span class="op">]</span>, <span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.33</span>, 
+         col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">10</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">pred</span><span class="op">$</span><span class="va">scores</span>, cex <span class="op">=</span> <span class="fl">0.33</span>, col <span class="op">=</span> <span class="st">"green"</span>, pch <span class="op">=</span> <span class="fl">10</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomleft"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&lt; 50%"</span>, <span class="st">"50%-95%"</span>, <span class="st">"95%-99%"</span>, 
+                         <span class="st">"&gt; 99%"</span>, <span class="st">"new"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"blue"</span>, 
+                                                     <span class="st">"red"</span>, <span class="st">"orange"</span>,<span class="st">"green"</span><span class="op">)</span>, pt.cex <span class="op">=</span> <span class="fl">1.5</span>, bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"outlier detection for functional PCA with KDE of first two PC scores"</span><span class="op">)</span></code></pre></div>
+<p><img src="multivaraite_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
   </div>
 

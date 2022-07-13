@@ -65,15 +65,14 @@ get_variable_multi_stat <- function(dat1, dat2, key,
     (rowMeans(abc[101:200, 1:100]) - mean(rowMeans(abc[101:200, 1:100])) )/ sum(rowMeans(abc[101:200, 1:100]))
     abc <- gower.dist(data.x= t(dat1[sample(1:200, 100), ]), data.y= t(dat2))
     abc
+    abc <- gower.dist(data.x= t(dat2), data.y= t(dat2))
+    abc
     #diagonal
 
     #continuous distance
     comp.cont(data.A = dat1, data.B = dat2, xlab.A = "nm_1")
     #categorical distance
     comp.prop(p1=table(dat1$cat_1), p2=table(dat2$cat_1), n1=nrow(dat1), n2=nrow(dat2), ref=FALSE)
-
-
-
   }
 
   abc1 <- function(){

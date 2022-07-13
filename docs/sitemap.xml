@@ -16,6 +16,9 @@
     <loc>/articles/quick_start.html</loc>
   </url>
   <url>
+    <loc>/articles/row_col_diff.html</loc>
+  </url>
+  <url>
     <loc>/articles/why_ddiff.html</loc>
   </url>
   <url>
@@ -35,6 +38,9 @@
   </url>
   <url>
     <loc>/reference/generate_test_data1.html</loc>
+  </url>
+  <url>
+    <loc>/reference/generate_test_functional_data.html</loc>
   </url>
   <url>
     <loc>/reference/get_variable_class.html</loc>
