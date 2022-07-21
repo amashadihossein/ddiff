@@ -53,6 +53,9 @@
       <a href="../articles/LR.html">literature review</a>
     </li>
     <li>
+      <a href="../articles/LR1.html">literature review 1</a>
+    </li>
+    <li>
       <a href="../articles/multivaraite.html">beyond univariate ddiff</a>
     </li>
     <li>
@@ -133,6 +136,57 @@ and compare them directly.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/pca_multi_stat.html">pca_multi_stat</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">records_added</span><span class="op">$</span><span class="va">old</span>, <span class="va">d</span><span class="op">$</span><span class="va">records_added</span><span class="op">$</span><span class="va">new</span>,<span class="st">"id"</span>, <span class="va">ddiff_rpt</span><span class="op">)</span></code></pre></div>
 <p><img src="multivaraite_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+</div>
+<div class="section level3">
+<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h3>
+<p>This is a brief introduction to the package
+<tt><code>fdapace</code></tt> <span class="citation">(Gajardo et al.
+2021)</span>. The basic work-flow behind the PACE approach for sparse
+functional data is as follows (see e.g. <span class="citation">(Yao,
+Müller, and Wang 2005; Liu and Müller 2009)</span> for more
+information):</p>
+<ol style="list-style-type: decimal">
+<li>Calculate the smoothed mean <span class="math inline">\(\hat{\mu}\)</span> (using local linear smoothing)
+aggregating all the available readings together.</li>
+<li>Calculate for each curve separately its own raw covariance and then
+aggregate all these raw covariances to generate the sample raw
+covariance.</li>
+<li>Use the off-diagonal elements of the sample raw covariance to
+estimate the smooth covariance.</li>
+<li>Perform eigenanalysis on the smoothed covariance to obtain the
+estimated eigenfunctions <span class="math inline">\(\hat{\phi}\)</span>
+and eigenvalues <span class="math inline">\(\hat{\lambda}\)</span>, then
+project that smoothed covariance on a positive semi-definite surface
+<span class="citation">(Hall, Müller, and Yao 2008)</span>.</li>
+<li>Use Conditional Expectation (PACE step) to estimate the
+corresponding scores <span class="math inline">\(\hat{\xi}\)</span>. ie.
+<span class="math inline">\(\hat{\xi}_{ik} = \hat{E}[\hat{\xi}_{ik}|Y_i]
+= \hat{\lambda}_k \hat{\phi}_{ik}^T
+\Sigma_{Y_i}^{-1}(Y_i-\hat{\mu}_i)\)</span>.</li>
+</ol>
+<p>As a working assumption a dataset is treated as sparse if it has on
+average less than 20, potentially irregularly sampled, measurements per
+subject. A user can manually change the automatically determined
+<tt><code>dataType</code></tt> if that is necessary. For densely
+observed functional data simplified procedures are available to obtain
+the eigencomponents and associated functional principal components
+scores (see eg. <span class="citation">(Castro, Lawton, and Sylvestre
+1986)</span> for more information). In particular in this case we:</p>
+<ol style="list-style-type: decimal">
+<li>Calculate the cross-sectional mean <span class="math inline">\(\hat{\mu}\)</span>.</li>
+<li>Calculate the cross-sectional covariance surface (which is
+guaranteed to be positive semi-definite).</li>
+<li>Perform eigenanalysis on the covariance to estimate the
+eigenfunctions <span class="math inline">\(\hat{\phi}\)</span> and
+eigenvalues <span class="math inline">\(\hat{\lambda}\)</span>.</li>
+<li>Use numerical integration to estimate the corresponding scores <span class="math inline">\(\hat{\xi}\)</span>. ie. <span class="math inline">\(\hat{\xi}_{ik} = \int_0^T [ y(t) - \hat{\mu}(t)]
+\phi_i(t) dt\)</span>
+</li>
+</ol>
+<p>In the case of sparse FPCA the most computational intensive part is
+the smoothing of the sample’s raw covariance function. For this, we
+employ a local weighted bilinear smoother.</p>
 </div>
 <div class="section level2">
 <h2 id="generating-data">Generating Data<a class="anchor" aria-label="anchor" href="#generating-data"></a>
@@ -280,6 +334,36 @@ main clusters within the main body of sample.</p>
                                                      <span class="st">"red"</span>, <span class="st">"orange"</span>,<span class="st">"green"</span><span class="op">)</span>, pt.cex <span class="op">=</span> <span class="fl">1.5</span>, bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"outlier detection for functional PCA with KDE of first two PC scores"</span><span class="op">)</span></code></pre></div>
 <p><img src="multivaraite_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Castro86" class="csl-entry">
+Castro, PE, WH Lawton, and EA Sylvestre. 1986. <span>“Principal Modes of
+Variation for Processes with Continuous Sample Curves.”</span>
+<em>Technometrics</em> 28 (4): 329–37.
+</div>
+<div id="ref-Gajardo21" class="csl-entry">
+Gajardo, Alvaro, Satarupa Bhattacharjee, Cody Carroll, Yaqing Chen,
+Xiongtao Dai, Jianing Fan, Pantelis Z. Hadjipantelis, et al. 2021.
+<em><span class="nocase">f</span>dapace: Functional Data Analysis and
+Empirical Dynamics</em>. <a href="https://CRAN.R-project.org/package=fdapace" class="external-link">https://CRAN.R-project.org/package=fdapace</a>.
+</div>
+<div id="ref-Hall2008" class="csl-entry">
+Hall, P, H-G Müller, and F Yao. 2008. <span>“Modelling Sparse
+Generalized Longitudinal Observations with Latent Gaussian
+Processes.”</span> <em>Journal of the Royal Statistical Society: Series
+B (Statistical Methodology)</em> 70 (4): 703–23.
+</div>
+<div id="ref-Liu09" class="csl-entry">
+Liu, B, and H-G Müller. 2009. <span>“Estimating Derivatives for Samples
+of Sparsely Observed Functions, with Application to Online Auction
+Dynamics.”</span> <em>Journal of the American Statistical
+Association</em> 104 (486): 704–17.
+</div>
+<div id="ref-Yao05" class="csl-entry">
+Yao, F, H-G Müller, and J-L Wang. 2005. <span>“Functional Data Analysis
+for Sparse Longitudinal Data.”</span> <em>Journal of the American
+Statistical Association</em> 100 (470): 577–90.
+</div>
+</div>
 </div>
   </div>
 

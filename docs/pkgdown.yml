@@ -3,9 +3,10 @@ pkgdown: 2.0.4
 pkgdown_sha: ~
 articles:
   LR: LR.html
+  LR1: LR1.html
   multivaraite: multivaraite.html
   quick_start: quick_start.html
   row_col_diff: row_col_diff.html
   why_ddiff: why_ddiff.html
-last_built: 2022-07-13T15:30Z
+last_built: 2022-07-21T18:54Z
 

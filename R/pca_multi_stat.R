@@ -24,7 +24,8 @@ pca_multi_stat <- function(dat1, dat2, key, ddiff_objective, ...){
     d = generate_test_data(50)
     dat2 = d$records_added$new
     dat1 = d$records_added$old
-    key = "id"
+    #key = "id"
+    key = c("ID", "Days")
     measure_arg_con = list(cov = cov)
     n1 = nrow(dat1); d1 = ncol(dat1); n2 = nrow(dat2); d2 = ncol(dat2)
     objective = get_variable_class(dat1, dat2, "id")
@@ -34,17 +35,21 @@ pca_multi_stat <- function(dat1, dat2, key, ddiff_objective, ...){
     prcomp(dat1[, unlist(objective$data_1$continous)])
     #pilots.pca
     dat2_svd = svd(cov(dat2[, unlist(objective$data_2$continous)]))
-    ddiff_objective = get_variable_multi_stat(d$records_added$new, d$records_added$old, "id")
+    #ddiff_objective = get_variable_multi_stat(d$records_added$new, d$records_added$old, "id")
+    ddiff_objective = get_variable_multi_stat(d$records_added$new, d$records_added$old, c("ID", "Days"))
   }
-  objective = get_variable_class(dat1, dat2, "id")
+  objective = get_variable_class(dat1, dat2, key)
   dat1_svd = svd(as.data.frame(ddiff_objective$result_con$cov[1]))
 #  library(ggplot2)
   percent <- function(x, digits = 2, format = "f", ...) {
     paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
   }
   percent_pca = percent(dat1_svd$d/sum(dat1_svd$d))
-  project_data1 = data.matrix(dat1[, unlist(objective$data_1$continous)])%*%dat1_svd$u[,c(1,2)]
-  project_data2 = data.matrix(dat2[, unlist(objective$data_2$continous)])%*%dat1_svd$u[,c(1,2)]
+  names1 = unlist(objective$data_1$continous)
+  names2 = unlist(objective$data_2$continous)
+  key1 = cbind(key, c("nEggs" , "nEggsRemain"))
+  project_data1 = data.matrix(dat1[, names1[! names1 %in% key1]])%*%dat1_svd$u[,c(1,2)]
+  project_data2 = data.matrix(dat2[, names1[! names2 %in% key1]])%*%dat1_svd$u[,c(1,2)]
   p = ggplot2::ggplot(as.data.frame(project_data1), aes(x=project_data1[,1], y=project_data1[,2], colour = "data1")) +
   xlab(paste0("pc1(", percent_pca[1], ")")) + ylab(paste0("pc2(", percent_pca[2], ")")) + geom_point(size = 5) +
   geom_point(aes(x = project_data2[,1], y = project_data2[,2], colour = "data2"), as.data.frame(project_data2), size = 3) +

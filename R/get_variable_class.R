@@ -14,19 +14,22 @@
 #' result$result_cat
 #' result$result_bin
 #' @export
+#'
 get_variable_class <- function(dat1, dat2, key, ...){
+  dat1$id <- tidyr::unite(as.data.frame(dat1[,key]),  key, remove = FALSE, na.rm = FALSE)$key
+  dat2$id <- tidyr::unite(as.data.frame(dat2[,key]),  key, remove = FALSE, na.rm = FALSE)$key
   n1 = nrow(dat1); d1 = ncol(dat1); n2 = nrow(dat2); d2 = ncol(dat2)
   col_names1 = names(dat1)
-  con_pos1 = sapply(dat1, class) == "numeric"
+  con_pos1 = sapply(dat1, class) %in% c("numeric", "integer")
   cat_pos1 = sapply(dat1, nlevels) >= 3
   bin_pos1 = sapply(dat1, nlevels) == 2
-  id_pos1 = col_names1 == key
+  id_pos1 = col_names1 == "id"
 
   col_names2 = names(dat2)
-  con_pos2 = sapply(dat2, class) == "numeric"
+  con_pos2 = sapply(dat1, class) %in% c("numeric", "integer")
   cat_pos2 = sapply(dat2, nlevels) >= 3
   bin_pos2 = sapply(dat2, nlevels) == 2
-  id_pos2 = col_names2 == key
+  id_pos2 = col_names2 == "id"
 
   diff_objects <- list()
   data_1 = list(continous = list(col_names1[con_pos1]),

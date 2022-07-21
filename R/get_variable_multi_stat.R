@@ -24,10 +24,11 @@ get_variable_multi_stat <- function(dat1, dat2, key,
                           measure_arg_cat = list(table = table), measure_arg_bin = list(table = table), dis_arg = list("euclidean", "manhattan", "gower"), ...){
   abc <- function(...){
     library(ddiff)
-    d = generate_test_data(100)
+    #d = generate_test_data(100)
     dat1 = d$records_added$new
     dat2 = d$records_added$old
-    key = "id"
+    #key = "id"
+    key = c("ID", "Days")
     measure_arg_con = list(cov = cov)
     n1 = nrow(dat1); d1 = ncol(dat1); n2 = nrow(dat2); d2 = ncol(dat2)
     objective = get_variable_class(dat1, dat2, "id")
@@ -97,13 +98,16 @@ get_variable_multi_stat <- function(dat1, dat2, key,
     colnames(diff_result_bin) <- c(unlist(objective$data_2$binary), "data1", "data2")
   }
 
-  objective = get_variable_class(dat1, dat2,  key)
+  objective = get_variable_class(dat1, dat2, key)
   diff_result <- NULL
   diff_result_con <- NULL
+  key1 = cbind(key, c("nEggs" , "nEggsRemain"))
   for (arg in names(measure_arg_con)) {
     #arg = "cov"
-    con_varcovar1 <- measure_arg_con[[arg]](data.frame(dat1[, unlist(objective$data_1$continous)]))
-    con_varcovar2 <- measure_arg_con[[arg]](data.frame(dat2[, unlist(objective$data_2$continous)]))
+    names1 = unlist(objective$data_1$continous)
+    names2 = unlist(objective$data_2$continous)
+    con_varcovar1 <- measure_arg_con[[arg]](data.frame(dat1[, names1[! names1 %in% key1]]))
+    con_varcovar2 <- measure_arg_con[[arg]](data.frame(dat2[, names2[! names2 %in% key1]]))
     diff_result_con <- append(diff_result_con , list(arg = list(con_varcovar1, con_varcovar1)))
   }
   names(diff_result_con) <- names(measure_arg_con)

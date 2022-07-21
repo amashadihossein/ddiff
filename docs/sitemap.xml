@@ -7,6 +7,9 @@
     <loc>/articles/LR.html</loc>
   </url>
   <url>
+    <loc>/articles/LR1.html</loc>
+  </url>
+  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
@@ -38,6 +41,9 @@
   </url>
   <url>
     <loc>/reference/generate_test_data1.html</loc>
+  </url>
+  <url>
+    <loc>/reference/generate_test_data2.html</loc>
   </url>
   <url>
     <loc>/reference/generate_test_functional_data.html</loc>

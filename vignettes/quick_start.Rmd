@@ -1,6 +1,7 @@
 ---
 title: "A Quick Start Guide to R Package ‘ddiff’"
 output: rmarkdown::html_vignette
+#output: powerpoint_presentation
 vignette: >
   %\VignetteIndexEntry{A Quick Start Guide to R Package ‘ddiff’}
   %\VignetteEngine{knitr::rmarkdown}
@@ -19,7 +20,7 @@ This vigette was partally based on the github page given below
 > "Introduction to Data diff package."
 ([link](https://amashadihossein.github.io/ddiff/))
 
-## Installing the package
+# Installing the package
 
 ```{r, eval=FALSE}
 install.packages("ddiff")
@@ -27,21 +28,79 @@ install.packages("ddiff")
 
 To install the (development) GitHub version, you could use 
 ```{r, eval=FALSE}
-devtools::install_github("amashadihossein/ddiff") 
+devtools::install_github("amashadihossein/ddiff", ref = "dev") 
 ```
-
-# Form content comparsion
 
 First, we need to load the package and generate the simulated datasets : 
 ```{r results='markup'}
 library(ddiff)
-d <- generate_test_data(50)
+d <- generate_test_data2()
 ```
 
-To compare two datasets, simply pass them to the `ddiff_form` function:
-## When data tables being compared are identical
+For this simulated dataset, we are looking at a real dataset containing the eggs laid from 789 medflies (Mediterranean fruit flies, Ceratitis capitata) during the first 25 days of their lives and simulated data set which contains three continuous variable and two categorical and binary variable. 
+
+### Overview of the variables and their types in each datasets
 ```{r results='markup'}
-ddiff_rpt <- ddiff_form(d$identical$new, d$identical$old, "id")
+sapply(d$identical$new, class)
+```
+
+### Overview of the testing datasets
+```{r results='markup'}
+data.tree::FromListSimple(d)
+```
+
+# literature review 
+
+## arsenal::comparedf()
+```{r results='markup'}
+arsenal::comparedf(d$records_added$new, d$records_added$old)
+arsenal::comparedf(d$order$new, d$order$old)
+summary(arsenal::comparedf(d$order$new, d$order$old))
+```
+
+## compareDF::compare_df()
+```{r results='markup'}
+tryCatch(compareDF::compare_df(d$order$new, d$order$old, c("Days", "ID")), error = function(e) "The two dataframes are similar after reordering")
+#compareDF::compare_df(d$records_added$new, d$records_added$old, c("Days", "ID"))
+```
+
+## diffdf::diffdf()
+```{r results='markup'}
+diffdf::diffdf(d$order$new, d$order$old)
+diffdf::diffdf(d$records_added$new, d$records_added$old)
+```
+
+## dplyr::all_equal()
+```{r results='markup'}
+dplyr::all_equal(d$order$new, d$order$old)
+dplyr::all_equal(d$records_added$new, d$records_added$old)
+```
+
+## janitor::compare_df_cols()
+```{r results='markup'}
+janitor::compare_df_cols(d$order$new, d$order$old, d$records_added$new, d$records_added$old)
+```
+
+## vetr::alike()
+```{r results='markup'}
+vetr::alike(d$order$new, d$order$old)
+vetr::alike(d$records_added$new, d$records_added$old)
+```
+
+## waldo::compare()
+```{r results='markup'}
+waldo::compare(d$order$new, d$order$old)
+waldo::compare(d$records_added$new, d$records_added$old)
+```
+
+# Form ddiff
+
+To compare two datasets, simply pass them to the `ddiff_form` function:
+
+## When data tables being compared are identical
+
+```{r results='markup'}
+ddiff_rpt <- ddiff_form(d$identical$new, d$identical$old, c("ID", "Days"))
 ```
 
 The structure of the output is a list which contains 7 indicator given below and `arsenal::comparedf` object. For more details and useage of the `arsenal::comparedf`, please refer [vignettes](https://cran.r-project.org/web/packages/arsenal/vignettes/comparedf.html) for more detail regarding generating SAS-like report from comparedf object. 
@@ -49,62 +108,65 @@ The structure of the output is a list which contains 7 indicator given below and
 The each indicator is corresponding to the following criterion:
 
 - When data tables being compared are identical : identical
-- When order of columns and rows are changed : info_match
 - When attributes are the same but content change : attributes_match
 - When attributes change but colnames are the same : column_match
 - When attributes change and colnames are different too : row_match
- 
+- When order of columns and rows are changed : info_match
+
+### Output message
 ```{r results='markup'}
-ddiff_rpt[-7]
+ddiff_rpt[6]
+```
+### Output indictor
+```{r results='markup'}
+ddiff_rpt[1:5]
+```
+
+### Output objects
+```{r results='markup'}
 ddiff_rpt[7]
 ```
 
-## When order of columns and rows are changed
+## When attributes change but colnames are the same
 ```{r results='markup'}
-ddiff_rpt <- ddiff_form(d$order$new, d$order$old, "id")
+ddiff_rpt <- ddiff_form(d$attrs$different$col_same$new, d$attrs$different$col_same$old, c("ID", "Days"))
 ddiff_rpt
 ```
 
 ## When attributes are the same but content change
 ```{r results='markup'}
-ddiff_rpt <- ddiff_form(d$attrs$same$new, d$attrs$same$old, "id")
-ddiff_rpt
-```
-
-## When attributes change but colnames are the same
-```{r results='markup'}
-ddiff_rpt <- ddiff_form(d$attrs$different$col_same$new, d$attrs$different$col_same$old, "id")
+ddiff_rpt <- ddiff_form(d$attrs$same$new, d$attrs$same$old, c("ID", "Days"))
 ddiff_rpt
 ```
 
 ## When attributes change and colnames are different too
 ```{r results='markup'}
-ddiff_rpt <- ddiff_form(d$attrs$different$col_diff$new, d$attrs$different$col_diff$old, "id")
+ddiff_rpt <- ddiff_form(d$attrs$different$col_diff$new, d$attrs$different$col_diff$old, c("ID", "Days"))
 ddiff_rpt
 ```
 
-## When new records are added to a table
+## When order of columns and rows are changed
 ```{r results='markup'}
-ddiff_rpt <- ddiff_form(d$records_added$new, d$records_added$old, "id")
+ddiff_rpt <- ddiff_form(d$order$new, d$order$old, c("ID", "Days"))
 ddiff_rpt
 ```
 
-# Information content comparsion
-There are two main categories we are looking at when we compare datasets which are individual difference on each variables in each datasets and groups difference. 
+# Information diff
+There are two main categories we are looking at when we compare datasets which are individual difference on each variables in each datasets and groups difference. All packages mentioned above address the "form" "text-based" diff. The information-based diff is complementary to "text-based" diff (but also quite more challenging to implement as essentially it is an unsupervised learning problem)
 
 ## Univariate information diff
 For each individual variable, there are three main types of variables which are continuous, categorical and binary. The last two could be combined into one category while in pharmaceutical settings,  we make distinction between the two. Before we look into the difference. First, we need to know type of variables in each datasets. The `get_varialbe_class` is designed for this purpose. 
 
 ```{r results='markup'}
 #information content diff
-ddiff_rpt <- get_variable_class(d$identical$new, d$identical$old,"id")
+ddiff_rpt <- get_variable_class(d$identical$new, d$identical$old, c("ID", "Days"))
 #ddiff_rpt
 data.tree::FromListSimple(ddiff_rpt)
 str(ddiff_rpt)
 ```
 After knowing the types of variables, we could obtain custom difference metrics on each variables. For example, we could look at the difference by min, max, median, mean and standard error for continuous and frequency difference for categorical and binary variables shown below. 
 ```{r results='markup'}
-result <- get_variable_stat(d$identical$new, d$identical$old, "id")
+result <- get_variable_stat(d$identical$new, d$identical$old, c("ID", "Days"))
 
 result$result_con
 result$result_cat
@@ -113,11 +175,159 @@ result$result_bin
 ## Custom list of metrics 
 As shown in the above example, we offer some of the default metrics to look at for each types of variables. You could also apply some custom metrics as shown below. Note that the input metrics must be a list of funciton. 
 ```{r results='markup'}
-result <- get_variable_stat(d$identical$new, d$identical$old, "id", measure_arg_con = list(min = min, max = max, med = median))
+result <- get_variable_stat(d$identical$new, d$identical$old, c("ID", "Days"), measure_arg_con = list(min = min, max = max, med = median))
 result$result_con
 result$result_cat
 result$result_bin
 
 #You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+```
+
+# Multivariate diff
+
+For each variables in corresponding datasets, we could treat them as independent variables or we could view them as correlated variables where they are generated under some multivariate distribution.  The `get_varialbe_multi_stat` is designed for obtaining custom difference metrics on these variables. 
+
+For continuous variables, the default metric is set to be the variance-covariance matrix for multivariate case. The default metric for categorical and binary variables are contingency table and confusion matrix. 
+```{r results='markup'}
+#Multivariate information diff
+ddiff_rpt <- get_variable_multi_stat(d$records_added$old, d$records_added$new, c("ID", "Days"))
+ddiff_rpt
+```
+For lower dimensional data, we could compare the variance-covariance directly while for high dimensional data, this approach would be computationally expensive. One possible way around is that, we could apply dimension reduction methods on this case. For example, we could look at the difference by projecting the data into two dimension plane and compare them directly. 
+
+## PCA (There is not significant differences in terms of PC scores)
+
+```{r results='markup'}
+pca_multi_stat(d$records_added$old, d$records_added$new, c("ID", "Days"), ddiff_rpt)
+```
+
+## PCA (There is significant differences in terms of PC scores)
+
+```{r results='markup'}
+d_s <- generate_test_data(50)
+ddiff_rpt <- get_variable_multi_stat(d_s$records_added$old, d_s$records_added$new,"id")
+pca_multi_stat(d_s$records_added$old, d_s$records_added$new,"id", ddiff_rpt)
+```
+
+
+##  Overview of functional PCA on longutitual data
+
+This is a brief introduction to the package <tt>`fdapace`</tt> [@Gajardo21]. The basic work-flow behind the PACE approach for sparse functional data is as follows (see e.g. [@Yao05; @Liu09] for more information):
+
+1. Calculate the smoothed mean $\hat{\mu}$ (using local linear smoothing) aggregating all the available readings together.
+2. Calculate for each curve separately its own raw covariance and then aggregate all these raw covariances to generate the sample raw covariance.
+3. Use the off-diagonal elements of the sample raw covariance to estimate the smooth covariance.
+4. Perform eigenanalysis on the smoothed covariance to obtain the estimated eigenfunctions $\hat{\phi}$ and eigenvalues $\hat{\lambda}$, then project that smoothed covariance on a positive semi-definite surface [@Hall2008].
+5. Use Conditional Expectation (PACE step) to estimate the corresponding scores $\hat{\xi}$.
+ie. \newline 
+$\hat{\xi}_{ik} = \hat{E}[\hat{\xi}_{ik}|Y_i] = \hat{\lambda}_k \hat{\phi}_{ik}^T \Sigma_{Y_i}^{-1}(Y_i-\hat{\mu}_i)$.
+
+As a working assumption a dataset is treated as sparse if it has on average less than 20, potentially irregularly sampled, measurements per subject. A user can manually change the automatically determined <tt>`dataType`</tt> if that is necessary.
+For densely observed functional data simplified procedures are available to obtain the eigencomponents and associated functional principal components scores (see eg.  [@Castro86] for more information). In particular in this case we:
+ 
+1. Calculate the cross-sectional mean $\hat{\mu}$.
+2. Calculate the cross-sectional covariance surface (which is guaranteed to be positive semi-definite).
+3. Perform eigenanalysis on the covariance to estimate the eigenfunctions $\hat{\phi}$ and eigenvalues $\hat{\lambda}$.
+4. Use numerical integration to estimate the corresponding scores $\hat{\xi}$.
+  ie. \newline
+ $\hat{\xi}_{ik} =  \int_0^T [ y(t) - \hat{\mu}(t)] \phi_i(t) dt$ 
+
+In the case of sparse FPCA the most computational intensive part is the smoothing of the sample's raw covariance function. For this, we employ a local weighted bilinear smoother.
+
+
+### Generating Data
+
+We use the longitudinal dataset that this available with ddiff to showcase FPCA and its related functionality. The dataset containing [...]. The data are rather noisy, dense and with a characteristic flat start. For that reason in contrast with above we will use a smoothing estimating procedure despite having dense data.
+```{r results='markup'}
+fdata <- d$records_added$new
+```
+
+### Apply functional PCA
+
+```{r results='markup'}
+Flies <- fdapace::MakeFPCAInputs(IDs = fdata$ID, tVec = fdata$Days, yVec = fdata$nEggs)
+fpcaObjFlies <- fdapace::FPCA(Flies$Ly, Flies$Lt, list(methodMuCovEst = 'smooth', dataType='Dense', error = FALSE))
+```
+Based on the scree-plot we see that the first three components appear to encapsulate most of the relevant variation. The number of eigencomponents to reach a 99.99% FVE is 11 but just 6 eigencomponents are enough to reach a 95.0%. 
+
+### Plot the FPCA result in R using fdapace
+
+```{r results='markup'}
+par(mar=c(2.5,2.5,2.5,2.5))
+plot(fpcaObjFlies)
+```
+### Outlier detection
+
+One can perform outlier detection (Febrero, Galeano, and González-Manteiga 2007). Different ranking methodologies (KDE, bagplot Hyndman and Shang (2010) or point-wise) are available and can potentially identify different aspects of a sample. For example here it is notable that the kernel density estimator KDE variant identifies two main clusters within the main body of sample. 
+
+```{r results='markup'}
+fObj <- fpcaObjFlies
+fScores1 <- fObj$xiEst[, 1]
+fScores2 <- fObj$xiEst[, 2]
+fScoresAll <- cbind(fScores1, fScores2)
+
+fhat <- ks::kde(x = fScoresAll, gridsize = c(400, 400), compute.cont = TRUE)
+zin = fhat$estimate
+quickNNeval <- function(xin,yin, zin, xout, yout){
+  xIndices = sapply( xout, function(myArg) which.min( abs( xin - myArg) ), simplify = TRUE)
+  yIndices = sapply( yout, function(myArg) which.min( abs( yin - myArg) ), simplify = TRUE)
+  return( zin[ cbind(xIndices,yIndices)] )
+}
+qq = quickNNeval(xin = fhat$eval.points[[1]], yin = fhat$eval.points[[2]], zin = zin, xout = fScores1, yout = fScores2)
+xedge = 1.05 * max(abs(fScores1))
+yedge = 1.05 * max(abs(fScores2))
+args2 = list(x = fhat$eval.points[[1]], y = fhat$eval.points[[2]], 
+               z = zin, labcex = 1.66, col = c("black", "blue","red"), levels = fhat$cont[c(50, 95, 99)], 
+               labels = c("50%", "95%", "99%"))
+args1 <- list(pch = 10, xlab = paste("FPC", 1, 
+                                     " scores ", round(100 * fObj$cumFVE[1]), 
+                                     "%", sep = ""), ylab = paste("FPC", 2, 
+                                                                  " scores ", round(diff(100 * fObj$cumFVE[c(2 - 
+                                                                                                               1, 2)])), "%", sep = ""), xlim = c(-xedge, xedge), ylim = c(-yedge, yedge), lwd = 2)
+do.call(graphics::contour, c(args2, args1))
+  
+grid(col = "#e6e6e6")
+points(fScoresAll[qq <= fhat$cont[99], ], cex = 0.5, 
+         col = "orange", pch = 10, lwd = 2)
+points(fScoresAll[qq > fhat$cont[99] & qq <= fhat$cont[95], 
+  ], cex = 0.33, col = "red", pch = 10, lwd = 2)
+points(fScoresAll[qq > fhat$cont[95] & qq <= fhat$cont[50], 
+  ], cex = 0.33, col = "blue", pch = 10, lwd = 2)
+points(fScoresAll[qq >= fhat$cont[50], ], cex = 0.33, 
+         col = "black", pch = 10, lwd = 2)
+legend("bottomleft", c("< 50%", "50%-95%", "95%-99%", 
+                         "> 99%"), pch = 19, col = c("black", "blue", 
+                                                     "red", "orange"), pt.cex = 1.5, bg = "white")
+title(main = "outlier detection for functional PCA with KDE of first two PC scores")
+```
+### Project new data samples into the existing 2d space spanned by first two FPC
+
+We could also project the new data into the old space of scores. 
+```{r results='markup'}
+library(dplyr)
+fdata_new <- d$records_added$old
+fdata_new <- fdata_new %>% arrange(Days)
+Flies <- fdapace::MakeFPCAInputs(IDs = fdata_new$ID, tVec = fdata_new$Days, yVec = fdata_new$nEggs)
+length(unique(fdata_new$ID))
+pred <- predict(fObj, Flies$Ly, Flies$Lt, K=2)
+pred$scores
+```
+```{r results='markup'}
+do.call(graphics::contour, c(args2, args1))
+  
+grid(col = "#e6e6e6")
+points(fScoresAll[qq <= fhat$cont[99], ], cex = 0.5, 
+         col = "orange", pch = 10, lwd = 2)
+points(fScoresAll[qq > fhat$cont[99] & qq <= fhat$cont[95], 
+  ], cex = 0.33, col = "red", pch = 10, lwd = 2)
+points(fScoresAll[qq > fhat$cont[95] & qq <= fhat$cont[50], 
+  ], cex = 0.33, col = "blue", pch = 10, lwd = 2)
+points(fScoresAll[qq >= fhat$cont[50], ], cex = 0.33, 
+         col = "black", pch = 10, lwd = 2)
+points(pred$scores, cex = 0.33, col = "green", pch = 10, lwd = 2)
+legend("bottomleft", c("< 50%", "50%-95%", "95%-99%", 
+                         "> 99%", "new"), pch = 19, col = c("black", "blue", 
+                                                     "red", "orange","green"), pt.cex = 1.5, bg = "white")
+title(main = "outlier detection for functional PCA with KDE of first two PC scores")
 ```
 

@@ -1,5 +1,7 @@
 ---
 title: "beyond univariate ddiff"
+bibliography: 
+  - roxygen.bib
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{beyond univariate ddiff}
@@ -32,6 +34,31 @@ For lower dimensional data, we could compare the variance-covariance directly wh
 ```{r results='markup'}
 pca_multi_stat(d$records_added$old, d$records_added$new,"id", ddiff_rpt)
 ```
+
+##  Overview 
+
+This is a brief introduction to the package <tt>`fdapace`</tt> [@Gajardo21]. The basic work-flow behind the PACE approach for sparse functional data is as follows (see e.g. [@Yao05; @Liu09] for more information):
+
+1. Calculate the smoothed mean $\hat{\mu}$ (using local linear smoothing) aggregating all the available readings together.
+2. Calculate for each curve separately its own raw covariance and then aggregate all these raw covariances to generate the sample raw covariance.
+3. Use the off-diagonal elements of the sample raw covariance to estimate the smooth covariance.
+4. Perform eigenanalysis on the smoothed covariance to obtain the estimated eigenfunctions $\hat{\phi}$ and eigenvalues $\hat{\lambda}$, then project that smoothed covariance on a positive semi-definite surface [@Hall2008].
+5. Use Conditional Expectation (PACE step) to estimate the corresponding scores $\hat{\xi}$.
+ie. \newline 
+$\hat{\xi}_{ik} = \hat{E}[\hat{\xi}_{ik}|Y_i] = \hat{\lambda}_k \hat{\phi}_{ik}^T \Sigma_{Y_i}^{-1}(Y_i-\hat{\mu}_i)$.
+
+As a working assumption a dataset is treated as sparse if it has on average less than 20, potentially irregularly sampled, measurements per subject. A user can manually change the automatically determined <tt>`dataType`</tt> if that is necessary.
+For densely observed functional data simplified procedures are available to obtain the eigencomponents and associated functional principal components scores (see eg.  [@Castro86] for more information). In particular in this case we:
+ 
+1. Calculate the cross-sectional mean $\hat{\mu}$.
+2. Calculate the cross-sectional covariance surface (which is guaranteed to be positive semi-definite).
+3. Perform eigenanalysis on the covariance to estimate the eigenfunctions $\hat{\phi}$ and eigenvalues $\hat{\lambda}$.
+4. Use numerical integration to estimate the corresponding scores $\hat{\xi}$.
+  ie. \newline
+ $\hat{\xi}_{ik} =  \int_0^T [ y(t) - \hat{\mu}(t)] \phi_i(t) dt$ 
+
+In the case of sparse FPCA the most computational intensive part is the smoothing of the sample's raw covariance function. For this, we employ a local weighted bilinear smoother.
+
 
 # Generating Data
 We use the longitudinal dataset that this available with ddiff to showcase FPCA and its related functionality. The dataset containing [...]. The data are rather noisy, dense and with a characteristic flat start. For that reason in contrast with above we will use a smoothing estimating procedure despite having dense data.

@@ -17,15 +17,17 @@
 #' #result$result_cat
 #' #result$result_bin
 #' @export
+#'
 get_variable_stat <- function(dat1, dat2, key,
                               measure_arg_con = list(min = min, max = max, med = median, mean = mean, std = "standard error"),
                               measure_arg_cat = list(table = table), measure_arg_bin = list(table = table), ...){
   abc <- function(...){
     library(ddiff)
-    d <- generate_test_data(50)
+    d <- generate_test_data2()
     dat1 = d$records_added$new
     dat2 = d$records_added$old
-    key = "id"
+    #key = "id"
+    key = c("ID", "Days")
     n1 = nrow(dat1); d1 = ncol(dat1); n2 = nrow(dat2); d2 = ncol(dat2)
     measure_arg_con = list(min, max, median, mean)
     #measure_arg_con = list(min = min, max = max, med = median, mean = mean)
@@ -34,6 +36,8 @@ get_variable_stat <- function(dat1, dat2, key,
     measure_arg_bin = list(table = table)
     objective = get_variable_class(dat1, dat2, "id")
   }
+
+
   objective = get_variable_class(dat1, dat2,  key)
   diff_result <- NULL
   abc2 <- NULL
@@ -41,7 +45,7 @@ get_variable_stat <- function(dat1, dat2, key,
     con_summary1 <- data.frame(sapply(dat1[, unlist(objective$data_1$continous)], function(x) sqrt(var(x) / length(x))))
     con_summary2 <- data.frame(sapply(dat2[, unlist(objective$data_2$continous)], function(x) sqrt(var(x) / length(x))))
     abc1 <- merge(con_summary1, con_summary2, by="row.names")
-    abc2 <- cbind(rep("standard error", ncol(abc1)), abc1)
+    abc2 <- cbind(rep("standard error", nrow(abc1)), abc1)
     colnames(abc2) <- c("stat", "variable", "data1", "data2")
     measure_arg_con = measure_arg_con[!measure_arg_con == "standard error"]
   }
@@ -51,30 +55,49 @@ get_variable_stat <- function(dat1, dat2, key,
     test1 = data.frame(sapply(dat1[, unlist(objective$data_1$continous)], measure_arg_con[[arg]]))
     test2 = data.frame(sapply(dat2[, unlist(objective$data_2$continous)], measure_arg_con[[arg]]))
     abc <- merge(test1, test2, by="row.names")
-    diff_result <- rbind(diff_result, cbind(rep(arg, ncol(abc)),  abc))
+    diff_result <- rbind(diff_result, cbind(rep(arg, nrow(abc)),  abc))
   }
   colnames(diff_result) <- c("stat", "variable", "data1", "data2")
   diff_result <- rbind(diff_result, abc2)
 
-  diff_result_cat <- NULL
+  #diff_result_cat <- NULL
+  diff_result_cat <- list()
   for (arg in names(measure_arg_cat)) {
     #arg = "table"
     cat_table1 <- data.frame(apply(dat1[, unlist(objective$data_1$categorical), drop=F], 2, measure_arg_cat[[arg]]))
     cat_table2 <- data.frame(apply(dat2[, unlist(objective$data_2$categorical), drop=F], 2, measure_arg_cat[[arg]]))
-    abc <- merge(cat_table1, cat_table2, by="row.names")
-    diff_result_cat <- rbind(diff_result_cat, abc)
+    #abc <- merge(cat_table1, cat_table2, by="row.names")
+    #diff_result_cat <- rbind(diff_result_cat, abc)
   }
-  colnames(diff_result_cat) <- c(unlist(objective$data_2$categorical), "data1", "data2")
+  #colnames(diff_result_cat) <- c(unlist(objective$data_2$categorical), "data1", "data2")
 
-  diff_result_bin <- NULL
+  for (i in 1:length(unlist(objective$data_1$categorical))){
+    #i = 1
+    names = unlist(objective$data_1$categorical)
+    result_cat <- merge(cat_table1[ , i], cat_table2[ , i], by="row.names")
+    result_cat[,1] = names(table(dat1[, names[i], drop=F]))
+    diff_result_cat <- append(diff_result_cat, list(result_cat))
+    colnames(diff_result_cat[[i]]) <- c(names[i], "data1", "data2")
+  }
+
+  diff_result_bin <- list()
   for (arg in names(measure_arg_bin)) {
     #arg = "table"
     bin_table1 <- data.frame(apply(dat1[, unlist(objective$data_1$binary), drop=F], 2, measure_arg_bin[[arg]]))
     bin_table2 <- data.frame(apply(dat2[, unlist(objective$data_2$binary), drop=F], 2, measure_arg_bin[[arg]]))
-    abc <- merge(bin_table1, bin_table2, by="row.names")
-    diff_result_bin <- rbind(diff_result_bin, abc)
+    #abc <- merge(bin_table1, bin_table2, by="row.names")
+    #diff_result_bin <- rbind(diff_result_bin, abc)
   }
-  colnames(diff_result_bin) <- c(unlist(objective$data_2$binary), "data1", "data2")
+  #colnames(diff_result_bin) <- c(unlist(objective$data_2$binary), "data1", "data2")
+
+  for (i in 1:length(unlist(objective$data_1$binary))){
+    #i = 1
+    names = unlist(objective$data_1$binary)
+    result_bin <- merge(bin_table1[ , i], bin_table2[ , i], by="row.names")
+    result_bin[,1] = names(table(dat1[, names[i], drop=F]))
+    diff_result_bin <- append(diff_result_bin, list(result_bin))
+    colnames(diff_result_bin[[i]]) <- c(names[i], "data1", "data2")
+  }
 
   return(list(result_con = diff_result, result_cat = diff_result_cat, result_bin = diff_result_bin))
 }
