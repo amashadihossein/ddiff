@@ -2,6 +2,7 @@
 #'
 #' @description Generate two datasets for comparsion. The comparison are made on two main aspects : form and information
 #' @param n Number of observations for two datasets
+#' @import fdapace
 #' @return data 1 and data 2.
 #' @examples
 #' d = generate_test_data2()

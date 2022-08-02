@@ -10,6 +10,9 @@
 #' @param dis_arg list of distance for measuring the difference of variables in each datasets
 #' @param ... potential argument to added
 #' @return The sum of \code{x} and \code{y}.
+#' #importFrom grDevices, col2rgb, dev.off, quartz, rainbow, rgb
+#' #importFrom graphics, abline, contour, image, layout, legend, lines, matlines, matplot, par, persp, points, text, title
+#' #importFrom stats, approxfun, cov, integrate, median, prcomp, rbinom, rnorm, runif, var
 #' @examples
 #' n = 100
 #' d = generate_test_data(n)

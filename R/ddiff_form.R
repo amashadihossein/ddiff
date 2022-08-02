@@ -1,5 +1,3 @@
-#' obtain and compare empirical information of row, column and attributes from given two datasets
-#'
 #' @description obtain and compare empirical information of row, column and attributes from given two datasets. The comparison are made on following aspects :
 #' 1. whether the types of variables from given two datasets are the same
 #' 2. whether column names from given two datasets are the same
@@ -11,21 +9,10 @@
 #' @param dat2 Second Data need to be compared.
 #' @param key Unique identifiers to link two datasets
 #' @param ... potential argument to added
-#' @return ddiff_obj_info which contains indicator of above aspects. Also, the last element include existing comparedf object.
+#' @return ddiff which contains indicator of above aspects. Also, the last element include existing comparedf object.
+#'
 #' @examples
 #'
-#' n = 100
-#' d = generate_test_data2()
-#' result = ddiff_form(d$identical$new, d$identical$old, c("id_1", "id_2"))
-#' dat1 = d$identical$new
-#' dat2 = d$identical$old
-#' dat1 = d$attrs$different$col_diff$new
-#' dat2 = d$attrs$different$col_diff$old
-#' key = c("id_1", "id_2")
-#' key = c("ID", "Days")
-#' result$class_match
-#' result$column_match
-#' result$row_match
 #' @export
 #'
 ddiff_form <- function(dat1, dat2, key, ...){

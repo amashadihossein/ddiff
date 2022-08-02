@@ -12,7 +12,7 @@
 generate_test_data <- function(n){
   #n = 100
   set.seed(19)
-  mtx <- matrix(data = rnorm(n = n * 3), nrow = n, ncol = 3)
+  mtx <- matrix(data = stats::rnorm(n = n * 3), nrow = n, ncol = 3)
   df <- data.frame(mtx)
   colnames(df) <- paste0("nm_",1:3)
   df <- cbind(df,

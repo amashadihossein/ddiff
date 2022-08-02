@@ -34,6 +34,9 @@ get_variable_multi_stat(
 }
 \value{
 The sum of \code{x} and \code{y}.
+#importFrom grDevices, col2rgb, dev.off, quartz, rainbow, rgb
+#importFrom graphics, abline, contour, image, layout, legend, lines, matlines, matplot, par, persp, points, text, title
+#importFrom stats, approxfun, cov, integrate, median, prcomp, rbinom, rnorm, runif, var
 }
 \description{
 obtain and compare custom multivariate summary statistics from given two datasets.

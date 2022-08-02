@@ -28,4 +28,7 @@ result <- get_variable_class(d$identical$new, d$identical$old, "id")
 result$result_con
 result$result_cat
 result$result_bin
+#importFrom grDevices, col2rgb, dev.off, quartz, rainbow, rgb
+#importFrom graphics, abline, contour, image, layout, legend, lines, matlines, matplot, par, persp, points, text, title
+#importFrom stats, approxfun, cov, integrate, median, prcomp, rbinom, rnorm, runif, var
 }
