@@ -13,6 +13,9 @@
     <loc>/articles/index.html</loc>
   </url>
   <url>
+    <loc>/articles/literature_review.html</loc>
+  </url>
+  <url>
     <loc>/articles/multivaraite.html</loc>
   </url>
   <url>
@@ -31,7 +34,16 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/reference/ddiff_class.html</loc>
+  </url>
+  <url>
     <loc>/reference/ddiff_form.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ddiff_info_multivariate.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ddiff_info_univariate.html</loc>
   </url>
   <url>
     <loc>/reference/fpca_multi_stat.html</loc>
@@ -61,6 +73,12 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/make_ddiff_input.html</loc>
+  </url>
+  <url>
     <loc>/reference/pca_multi_stat.html</loc>
+  </url>
+  <url>
+    <loc>/reference/test_data.html</loc>
   </url>
 </urlset>

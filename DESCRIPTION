@@ -1,9 +1,9 @@
 Package: ddiff
 Title: A robust 'R' Functions for tracking data changes
 Version: 0.0.0.9000
-Authors@R: 
-    person("Zhenbang", "Wang",  "zhenbang.wang01@gmail.com", role = c("aut", "cre"))
-    person("Afshin", "Mashadi-Hossein" , "first.last@example.com", role = c("aut", "cre"))
+Authors@R: c(person("Afshin", ,"Mashadi-Hossein" , "first.last@example.com", role = c("aut", "cre")),
+             person("Zhenbang", ,"Wang", "zhenbang.wang01@gmail.com", role = c("aut")))
+Maintainer: Zhenbang Wang <zhenbang.wang01@gmail.com>
 Description: Unlike evolution of human being, data nowadays can vary significantly in short period of time and by different underlying generative models. It is crucial to distinguish the difference between datasets both from appearance and underneath. While most of the package focus on difference of appearance (structure and data itself), few have pay attention to the statistical difference which is more interesting to researcher. This package try to create such function to provide user the ability to spot difference both structurally and statistically.
 License: GPL-3
 Encoding: UTF-8
@@ -25,7 +25,9 @@ Imports:
      MASS,
      Matrix,
      tidyr, 
-     stats
+     stats,
+     StatMatch,
+     gower
 Suggests: 
     knitr,
     rmarkdown

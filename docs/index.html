@@ -50,22 +50,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/LR.html">literature review</a>
-    </li>
-    <li>
-      <a href="articles/LR1.html">literature review 1</a>
-    </li>
-    <li>
-      <a href="articles/multivaraite.html">beyond univariate ddiff</a>
+      <a href="articles/literature_review.html">Literature Review</a>
     </li>
     <li>
       <a href="articles/quick_start.html">A Quick Start Guide to R Package ‘ddiff’</a>
-    </li>
-    <li>
-      <a href="articles/row_col_diff.html">comprehensive guide to ddiff</a>
-    </li>
-    <li>
-      <a href="articles/why_ddiff.html">Why ddiff</a>
     </li>
   </ul>
 </li>
@@ -82,6 +70,7 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
 <div class="section level1">
 <div class="page-header"><h1 id="ddiff">ddiff<a class="anchor" aria-label="anchor" href="#ddiff"></a>
 </h1></div>
@@ -93,6 +82,17 @@
 </ul>
 <p>While each of these definitions has its own nuance, there are clearly some key takeaways: treating data as a product involves serving internal “customers” (data consumers), enabling decision-making and other key functions, and applying standards of rigor like SLAs. The key step is to apply a data as a product mindset is how you build, monitor, and measure data products. So when it comes to building pipelines and systems, use the same proven processes as you would with production software, like creating scope documents and breaking projects down into sprints. One of key sprints is the ability to track the difference of data product over time. In order to achieve this goal, we build a custom ‘ddiff’ function to tackle this problem.</p>
 </div>
+<div class="section level1">
+<h1 id="related-work">Related work<a class="anchor" aria-label="anchor" href="#related-work"></a>
+</h1>
+<p>Various packages have come along with utilities that could help characterize or compare tabular data. Examples include, <a href="https://github.com/alexsanjoseph/compareDF" class="external-link"><code>compareDF</code></a>, <a href="https://waldo.r-lib.org/index.html" class="external-link"><code>waldo</code></a>, <a href="https://cran.r-project.org/web/packages/arsenal/vignettes/comparedf.html" class="external-link"><code>arsenal</code></a>, <a href="http://sfirke.github.io/janitor/" class="external-link"><code>janitor</code></a>, and <a href="https://rich-iannone.github.io/pointblank/index.html" class="external-link"><code>pointblank</code></a>. Comparisons provided by these packages, while get us closer to something akin to a utility that could help us interpret changes as <code>diff</code> does, they typically fall short. For example, <code>compareDF</code>, as the package that most directly seeks to mimic a <code>git</code> type <code>diff</code> functionality, rather than aiming for what’s the spirit of diff (i.e. enabling the developer to interpret differences) mimics text tracking functionality of <code>diff</code>, which as mentioned is not suitable for data. As a concrete example, from information perspective, reordering of columns and rows does not change the information-content of a data table. However, both <code>git</code> and <code>compareDF</code> treat row re-arrangement as change by default (i.e. when you don’t specify a grouping variable). Furthermore, all mentioned packages shy away from statistical information tracking. Authors, may have thought about and consciously decided to exclude that from the scope of their projects, given complexities of general purpose tools for what could be akin to anomaly detection. However, given the value of such approaches, even limited application of statistical approaches (e.g. finding univariate extreme values which is fairly robust), could move us closer to having tools that provide actionable <code>diff</code> like functionality for data. The illustration below shows a comparison to implementing a diff functionality with packages dicussed above. <img src="articles/diff1_table.png" style="width:100.0%" alt="ddiff appraoch"></p>
+</div>
+<div class="section level1">
+<h1 id="approach">Approach<a class="anchor" aria-label="anchor" href="#approach"></a>
+</h1>
+<p>The are two lines of components in the ddiff function workflow. The first is Form or base content diff. The second is Information content diff. Form or base content diff is mechanical and quite straight forward to implement. In contrast, information content <code>diff</code> ventures in the realm of unsupervised learning and hence more complex.<br><img src="articles/approach.png" style="width:100.0%" alt="ddiff appraoch"></p>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -114,7 +114,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Afshin first.last@example.com Mashadi-Hossein <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Afshin Mashadi-Hossein <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Zhenbang Wang <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
@@ -126,7 +127,7 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Afshin <a href="mailto:first.last@example.com" class="email">first.last@example.com</a> Mashadi-Hossein.</p>
+<p>Developed by Afshin Mashadi-Hossein, Zhenbang Wang.</p>
 </div>
 
 <div class="pkgdown">

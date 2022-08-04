@@ -2,11 +2,7 @@ pandoc: 2.17.1.1
 pkgdown: 2.0.4
 pkgdown_sha: ~
 articles:
-  LR: LR.html
-  LR1: LR1.html
-  multivaraite: multivaraite.html
+  literature_review: literature_review.html
   quick_start: quick_start.html
-  row_col_diff: row_col_diff.html
-  why_ddiff: why_ddiff.html
-last_built: 2022-07-29T16:47Z
+last_built: 2022-08-04T16:03Z
 

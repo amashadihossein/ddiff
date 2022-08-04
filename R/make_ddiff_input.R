@@ -1,3 +1,17 @@
+#' format longitudinal dataset for functional data analysis
+#'
+#' @description This function could form dataset for ddiff and analysis
+#' @param n Number of observations for two datasets
+#' @param IDs
+#' @param tVec
+#' @param yVec
+#' @import fdapace
+#' @return data 1 and data 2.
+#' @examples
+#' d = test_data()
+#' data.tree::FromListSimple(d)
+#' @export
+#'
 make_ddiff_input <- function (IDs = NULL, tVec, yVec, na.rm = FALSE, sort = FALSE,
           deduplicate = FALSE)
 {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ddiff_form.R
 \name{ddiff_form}
 \alias{ddiff_form}
-\title{obtain and compare empirical information of row, column and attributes from given two datasets}
+\title{compare given two datasets in form level}
 \usage{
 ddiff_form(dat1, dat2, key, ...)
 }
@@ -16,10 +16,10 @@ ddiff_form(dat1, dat2, key, ...)
 \item{...}{potential argument to added}
 }
 \value{
-ddiff_obj_info which contains indicator of above aspects. Also, the last element include existing comparedf object.
+ddiff which contains indicator of above aspects. Also, the last element include existing comparedf object.
 }
 \description{
-obtain and compare empirical information of row, column and attributes from given two datasets. The comparison are made on following aspects :
+This function could obtain and compare empirical information of row, column and attributes from given two datasets. The comparison are made on following aspects :
 \enumerate{
 \item whether the types of variables from given two datasets are the same
 \item whether column names from given two datasets are the same
@@ -30,17 +30,7 @@ obtain and compare empirical information of row, column and attributes from give
 }
 }
 \examples{
-
-n = 100
-d = generate_test_data2()
-result = ddiff_form(d$identical$new, d$identical$old, c("id_1", "id_2"))
-dat1 = d$identical$new
-dat2 = d$identical$old
-dat1 = d$attrs$different$col_diff$new
-dat2 = d$attrs$different$col_diff$old
-key = c("id_1", "id_2")
-key = c("ID", "Days")
-result$class_match
-result$column_match
-result$row_match
+d <- test_data()
+ddiff_rpt <- ddiff_form(d$identical$new, d$identical$old, c("ID", "Days"))
+ddiff_rpt
 }

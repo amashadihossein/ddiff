@@ -1,0 +1,60 @@
+---
+title: "Literature Review"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{literature review 1}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# generate the test dataset 
+```{r results='markup'}
+library(ddiff)
+d <- test_data()
+```
+
+# compareDF::compare_df()
+```{r results='markup'}
+tryCatch(compareDF::compare_df(d$order$new, d$order$old, c("Days", "ID")), error = function(e) "error found")
+compareDF::compare_df(d$records_added$new, d$records_added$old, c("Days"))
+#compareDF::compare_df(df, df_class, c("Species"))
+#compareDF::compare_df(df, df_order, c("Species"))
+```
+
+# arsenal::comparedf()
+```{r results='markup'}
+arsenal::comparedf(d$records_added$new, d$records_added$old)
+arsenal::comparedf(d$order$new, d$order$old)
+summary(arsenal::comparedf(d$order$new, d$order$old))
+```
+
+# dplyr::all_equal()
+```{r results='markup'}
+dplyr::all_equal(d$order$new, d$order$old)
+dplyr::all_equal(d$records_added$new, d$records_added$old)
+#dplyr::all_equal(df, df_class, convert = TRUE)
+```
+
+# janitor::compare_df_cols()
+```{r results='markup'}
+janitor::compare_df_cols(d$order$new, d$order$old, d$records_added$new, d$records_added$old)
+```
+
+# vetr::alike()
+```{r results='markup'}
+vetr::alike(d$order$new, d$order$old)
+vetr::alike(d$records_added$new, d$records_added$old)
+```
+
+# diffdf::diffdf()
+```{r results='markup'}
+diffdf::diffdf(d$order$new, d$order$old)
+diffdf::diffdf(d$records_added$new, d$records_added$old)
+```

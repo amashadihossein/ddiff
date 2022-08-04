@@ -1,10 +1,6 @@
-#' @description obtain and compare statistical information from given two datasets. The comparison are made on following aspects :
-#' 1. whether the types of variables from given two datasets are the same
-#' 2. whether column names from given two datasets are the same
-#' 3. whether row names from given two datasets are the same
-#' 4. whether attributes from given two datasets are the same
-#' 5. whether the information given two datasets are the same (shuffled rows or columns)
-#' 6. whether the given two datasets are equivalent in R memory
+#' obtain and compare custom univariate summary statistics from given two datasets
+#'
+#' @description This function could obtain and compare statistical information from given two datasets.
 #' @param dat1 First Data need to be compared.
 #' @param dat2 Second Data need to be compared.
 #' @param key Unique identifiers to link two datasets
@@ -14,23 +10,26 @@
 #' @param dis_arg list of distance for measuring the difference of variables in each datasets
 #' @param ... potential argument to added
 #' @return TBC
+#' @importFrom stats
 #'
 #' @examples
-#'
+#' d <- test_data()
+#' ddiff_rpt <- ddiff_info_univariate(d$identical$new, d$identical$old, c("ID", "Days"))
+#' ddiff_rpt
 #' @export
 #'
-ddiff_info_univariate <- function(dat1, dat2, key, measure_arg_con = list(cov = cov),
+ddiff_info_univariate <- function(dat1, dat2, key, measure_arg_con = list(min = min, max = max, med = median, mean = mean, std = "standard error"),
                                   measure_arg_cat = list(table = table), measure_arg_bin = list(table = table), dis_arg = list("euclidean", "manhattan", "gower"), ...){
-  objective = get_variable_class(dat1, dat2,  key)
+  objective = ddiff_class(dat1, dat2,  key)
   diff_result <- NULL
   abc2 <- NULL
 
   if("standard error" %in% measure_arg_con){
     con_summary1 <- data.frame(sapply(dat1[, unlist(objective$data_1$continous)], function(x) sqrt(var(x) / length(x))))
     con_summary2 <- data.frame(sapply(dat2[, unlist(objective$data_2$continous)], function(x) sqrt(var(x) / length(x))))
-    std_result <- merge(con_summary1, con_summary2, by="row.names")
-    std_result_nam <- cbind(rep("standard error", nrow(std_result)), std_result)
-    colnames(std_result_nam) <- c("stat", "variable", "data1", "data2")
+    abc1 <- merge(con_summary1, con_summary2, by="row.names")
+    abc2 <- cbind(rep("standard error", nrow(abc1)), abc1)
+    colnames(abc2) <- c("stat", "variable", "data1", "data2")
     measure_arg_con = measure_arg_con[!measure_arg_con == "standard error"]
   }
 
@@ -50,6 +49,7 @@ ddiff_info_univariate <- function(dat1, dat2, key, measure_arg_con = list(cov = 
   }
 
   for (i in 1:length(unlist(objective$data_1$categorical))){
+    #i = 1
     names = unlist(objective$data_1$categorical)
     result_cat <- merge(cat_table1[ , i], cat_table2[ , i], by="row.names")
     result_cat[,1] = names(table(dat1[, names[i], drop=F]))

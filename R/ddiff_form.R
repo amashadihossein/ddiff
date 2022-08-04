@@ -1,4 +1,6 @@
-#' @description obtain and compare empirical information of row, column and attributes from given two datasets. The comparison are made on following aspects :
+#' compare given two datasets in form level
+#'
+#' @description This function could obtain and compare empirical information of row, column and attributes from given two datasets. The comparison are made on following aspects :
 #' 1. whether the types of variables from given two datasets are the same
 #' 2. whether column names from given two datasets are the same
 #' 3. whether row names from given two datasets are the same
@@ -12,7 +14,9 @@
 #' @return ddiff which contains indicator of above aspects. Also, the last element include existing comparedf object.
 #'
 #' @examples
-#'
+#' d <- test_data()
+#' ddiff_rpt <- ddiff_form(d$identical$new, d$identical$old, c("ID", "Days"))
+#' ddiff_rpt
 #' @export
 #'
 ddiff_form <- function(dat1, dat2, key, ...){
@@ -39,10 +43,6 @@ ddiff_form <- function(dat1, dat2, key, ...){
   }
 
   ##rownames different (unique identifiers case (user provided))
-  #dat1 = d$records_added$new
-  #dat2 = d$records_added$old
-  #key = "id"
-  #n1 = nrow(dat1); d1 = ncol(dat1); n2 = nrow(dat2); d2 = ncol(dat2)
   row_match = sum(data.table::chmatch(dat2[,"id"], dat1[,"id"]) -  seq(1, n2, 1)) != 0
   if(row_match & !is.na(row_match)){
     ddiff_obj$row_match <- F
