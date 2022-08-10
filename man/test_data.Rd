@@ -2,18 +2,16 @@
 % Please edit documentation in R/test_data.R
 \name{test_data}
 \alias{test_data}
-\title{generate two datasets for comparsion}
+\title{generate two datasets for comparison}
 \usage{
 test_data()
-}
-\arguments{
-\item{n}{Number of observations for two datasets}
 }
 \value{
 data 1 and data 2.
 }
 \description{
-Generate two datasets for comparsion. The comparison are made on two main aspects : form and information
+Generate two datasets for comparison. The comparison are made on
+two main aspects : form and information
 }
 \examples{
 d = test_data()

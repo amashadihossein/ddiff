@@ -14,7 +14,17 @@ make_ddiff_input(
 )
 }
 \arguments{
-\item{n}{Number of observations for two datasets}
+\item{IDs}{IDs}
+
+\item{tVec}{tVec}
+
+\item{yVec}{yVec}
+
+\item{na.rm}{remove NA T/F}
+
+\item{sort}{to sort or not T/F}
+
+\item{deduplicate}{to dedup or not T/F}
 }
 \value{
 data 1 and data 2.

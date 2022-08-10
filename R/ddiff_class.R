@@ -8,7 +8,7 @@
 #' @return The types of variables from given two datasets.
 #' @examples
 #' d = test_data()
-#' result <- ddiff_class(d$identical$new, d$identical$old, c("ID", "Days"))
+#' ddiff_rpt <- ddiff_class(d$identical$new, d$identical$old, c("ID", "Days"))
 #' data.tree::FromListSimple(ddiff_rpt)
 #' str(ddiff_rpt)
 #' @export

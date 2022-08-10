@@ -25,29 +25,33 @@ ddiff_info_multivariate(
 
 \item{key_ex}{variables that is excluded from variance covariance estimation}
 
-\item{measure_arg_con}{list of function for summary statistics of continuous response. The defalut list is list(cov = cov)}
+\item{measure_arg_con}{list of function for summary statistics of continuous
+response. The defalut list is list(cov = cov)}
 
-\item{measure_arg_cat}{list of function for summary statistics of categorical response}
+\item{measure_arg_cat}{list of function for summary statistics of categorical
+response}
 
 \item{measure_arg_bin}{list of function for summary statistics of binary response}
 
-\item{dis_arg}{list of distance for measuring the difference of variables in each datasets}
+\item{dis_arg}{list of distance for measuring the difference of variables in
+each datasets}
 
 \item{...}{potential argument to added}
 }
 \value{
 The sum of \code{x} and \code{y}.
-#importFrom grDevices, col2rgb, dev.off, quartz, rainbow, rgb
-#importFrom graphics, abline, contour, image, layout, legend, lines, matlines, matplot, par, persp, points, text, title
-#importFrom stats, approxfun, cov, integrate, median, prcomp, rbinom, rnorm, runif, var
 }
 \description{
-This function could obtain and compare custom multivariate summary statistics from given two datasets. Specially, the concurrent version involves obtaining the variance-covariance matrix of given two datasets
+This function could obtain and compare custom multivariate
+summary statistics from given two datasets. Specially, the concurrent version
+involves obtaining the variance-covariance matrix of given two datasets
 }
 \examples{
-d = test_data()
-#result = ddiff_info_multivariate(d$identical$new, d$identical$old, , c("ID", "Days"), c("nEggs" , "nEggsRemain"))
-#result$result_con
-#result$result_cat
-#result$result_bin
+d <- test_data()
+result <- ddiff_info_multivariate(dat1 = d$identical$new,
+ dat2 = d$identical$old, key = c("ID", "Days"),
+ key_ex =  c("nEggs" , "nEggsRemain"))
+result$result_con
+result$result_cat
+result$result_bin
 }

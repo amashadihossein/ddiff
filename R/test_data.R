@@ -1,7 +1,7 @@
-#' generate two datasets for comparsion
+#' generate two datasets for comparison
 #'
-#' @description Generate two datasets for comparsion. The comparison are made on two main aspects : form and information
-#' @param n Number of observations for two datasets
+#' @description Generate two datasets for comparison. The comparison are made on
+#'  two main aspects : form and information
 #' @import fdapace
 #' @return data 1 and data 2.
 #' @examples
@@ -10,8 +10,7 @@
 #' @export
 #'
 test_data <- function(){
-  library(fdapace)
-  data(medfly25)
+
   dat <- medfly25
   n = nrow(dat)
   set.seed(19)

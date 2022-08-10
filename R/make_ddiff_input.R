@@ -1,10 +1,12 @@
 #' format longitudinal dataset for functional data analysis
 #'
 #' @description This function could form dataset for ddiff and analysis
-#' @param n Number of observations for two datasets
-#' @param IDs
-#' @param tVec
-#' @param yVec
+#' @param IDs IDs
+#' @param tVec tVec
+#' @param yVec yVec
+#' @param na.rm remove NA T/F
+#' @param sort to sort or not T/F
+#' @param deduplicate to dedup or not T/F
 #' @import fdapace
 #' @return data 1 and data 2.
 #' @examples

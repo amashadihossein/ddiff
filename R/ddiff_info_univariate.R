@@ -10,7 +10,7 @@
 #' @param dis_arg list of distance for measuring the difference of variables in each datasets
 #' @param ... potential argument to added
 #' @return TBC
-#' @importFrom stats
+#' @import stats
 #'
 #' @examples
 #' d <- test_data()
