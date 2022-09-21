@@ -14,6 +14,16 @@
 #' @export
 #'
 ddiff_class <- function(dat1, dat2, key, ...){
+  #' TODO: this is fragile as it relies on what classes are defined for columns
+  #' Ex. try converting factor to character and nlevels logic breaks
+  #' Consider looking into readr::guess_parser for a more robust implementation 
+  #' of guess while providing room for guess verification or user specification
+  #' of the classes 
+  #' 
+  #' TODO: needs assertion of input params. What happens if key doesn't exist
+  #' 
+  #' TODO: In addition to the base classes, we may want to enable special case
+  #' for time series given its prevalence 
   dat1$id <- tidyr::unite(as.data.frame(dat1[,key]),  key, remove = FALSE, na.rm = FALSE)$key
   dat2$id <- tidyr::unite(as.data.frame(dat2[,key]),  key, remove = FALSE, na.rm = FALSE)$key
   n1 = nrow(dat1); d1 = ncol(dat1); n2 = nrow(dat2); d2 = ncol(dat2)

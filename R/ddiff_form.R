@@ -25,20 +25,19 @@ ddiff_form <- function(dat1, dat2, key, ...){
   dat2$id <- tidyr::unite(as.data.frame(dat2[,key]),  key, remove = FALSE, na.rm = FALSE)$key
   n1 = nrow(dat1); d1 = ncol(dat1); n2 = nrow(dat2); d2 = ncol(dat2);
   ddiff_obj <- list()
-  #ddiff_obj$identical <- ddiff_obj$info_match <- ddiff_obj$attributes_match <- ddiff_obj$row_match <- ddiff_obj$column_match <- F
-  ddiff_obj$info_match <- ddiff_obj$row_match <- ddiff_obj$column_match <- ddiff_obj$attributes_match <- ddiff_obj$identical <- T
+  
+  ddiff_obj$info_match <- ddiff_obj$row_match <- ddiff_obj$column_match <- 
+    ddiff_obj$attributes_match <- ddiff_obj$identical <- T
+  
   ddiff_obj$message <- paste0( "data1 and data2 are identical")
+  
   if(class(dat1) != "data.frame"  | class(dat2) != "data.frame"){
     return("error : input must be data frame objects")
   }
- #class
- # if(sum(apply(dat1, 2, class) == apply(dat2, 2, class)[data.table::chmatch(colnames(dat1), colnames(dat2))]) == d1){
- #   ddiff_obj$class_match <- T
- #   ddiff_obj$message <- paste0("variable class of ", deparse(substitute(dat1)), " and ",  deparse(substitute(dat2)), " are identical")
- # }
 
   #row shuffled or column shuffled
-  if(!identical(x = dat1[data.table::chmatch(dat2[,"id"], dat1[,"id"]), data.table::chmatch(colnames(dat2), colnames(dat1))], y = dat2)){
+  if(!identical(x = dat1[data.table::chmatch(dat2[,"id"], dat1[,"id"]), 
+                         data.table::chmatch(colnames(dat2), colnames(dat1))], y = dat2)){
     ddiff_obj$info_match <- F
   }
 

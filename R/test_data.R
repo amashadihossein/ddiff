@@ -42,7 +42,8 @@ test_data <- function(){
   attr(x = test_d$attrs$different$col_same$new, which = "key_1") <-"value_1"
 
 
-  test_d$attrs$different$col_diff <- list(old = df, new = cbind(df,cat_2 = sample(df$cat_1)))
+  test_d$attrs$different$col_diff <- list(old = df, 
+                                          new = cbind(df,cat_2 = sample(df$cat_1)))
 
   test_d$identical <- list(old = df, new = df)
 
