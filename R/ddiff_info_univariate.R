@@ -18,8 +18,14 @@
 #' ddiff_rpt
 #' @export
 #'
-ddiff_info_univariate <- function(dat1, dat2, key, measure_arg_con = list(min = min, max = max, med = median, mean = mean, std = "standard error"),
-                                  measure_arg_cat = list(table = table), measure_arg_bin = list(table = table), dis_arg = list("euclidean", "manhattan", "gower"), ...){
+ddiff_info_univariate <- function(dat1, dat2, key, 
+                                  measure_arg_con = list(min = min, max = max, 
+                                                         med = median, mean = mean,
+                                                         std = "standard error"),
+                                  measure_arg_cat = list(table = table),
+                                  measure_arg_bin = list(table = table),
+                                  dis_arg = list("euclidean", "manhattan", "gower"), ...){
+  
   objective = ddiff_class(dat1, dat2,  key)
   diff_result <- NULL
   abc2 <- NULL

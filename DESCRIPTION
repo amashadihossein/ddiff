@@ -18,23 +18,24 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
-     arsenal, 
-     data.table,
-     data.tree,
-     ggplot2,
-     dplyr,
-     fdapace,
-     compareDF,
-     diffdf,
-     janitor,
-     ks,
-     vetr,
-     waldo,
-     MASS,
-     Matrix,
-     tidyr, 
-     StatMatch,
-     gower
+    arsenal,
+    data.table,
+    data.tree,
+    ggplot2,
+    dplyr,
+    fdapace,
+    compareDF,
+    diffdf,
+    janitor,
+    ks,
+    vetr,
+    waldo,
+    MASS,
+    Matrix,
+    tidyr,
+    StatMatch,
+    gower,
+    magrittr
 Suggests: 
     knitr,
     rmarkdown

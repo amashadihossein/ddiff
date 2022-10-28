@@ -4,12 +4,12 @@
 \alias{ddiff_class}
 \title{obtain types of variables from given two datasets}
 \usage{
-ddiff_class(dat1, dat2, key, ...)
+ddiff_class(df_ref, df, key = character(0), ...)
 }
 \arguments{
-\item{dat1}{First Data need to be compared.}
+\item{df_ref}{reference data.frame relative to which comparison is made.}
 
-\item{dat2}{Second Data need to be compared.}
+\item{df}{a data.frame compared to the refernce}
 
 \item{key}{Unique identifiers to link two datasets}
 
