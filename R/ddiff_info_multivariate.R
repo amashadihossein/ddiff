@@ -34,8 +34,8 @@ ddiff_info_multivariate <- function(dat1, dat2, key, key_ex,
   diff_result_con <- NULL
   key1 = cbind(key, key_ex)
   for (arg in names(measure_arg_con)) {
-    names1 = unlist(objective$data_1$continous)
-    names2 = unlist(objective$data_2$continous)
+    names1 = unlist(objective$data_1$continuous)
+    names2 = unlist(objective$data_2$continuous)
     con_varcovar1 <- measure_arg_con[[arg]](data.frame(dat1[, names1[! names1 %in% key1]]))
     con_varcovar2 <- measure_arg_con[[arg]](data.frame(dat2[, names2[! names2 %in% key1]]))
     diff_result_con <- append(diff_result_con , list(arg = list(con_varcovar1, con_varcovar1)))

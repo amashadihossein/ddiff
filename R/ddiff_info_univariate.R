@@ -31,8 +31,8 @@ ddiff_info_univariate <- function(dat1, dat2, key,
   abc2 <- NULL
 
   if("standard error" %in% measure_arg_con){
-    con_summary1 <- data.frame(sapply(dat1[, unlist(objective$data_1$continous)], function(x) sqrt(var(x) / length(x))))
-    con_summary2 <- data.frame(sapply(dat2[, unlist(objective$data_2$continous)], function(x) sqrt(var(x) / length(x))))
+    con_summary1 <- data.frame(sapply(dat1[, unlist(objective$data_1$continuous)], function(x) sqrt(var(x) / length(x))))
+    con_summary2 <- data.frame(sapply(dat2[, unlist(objective$data_2$continuous)], function(x) sqrt(var(x) / length(x))))
     abc1 <- merge(con_summary1, con_summary2, by="row.names")
     abc2 <- cbind(rep("standard error", nrow(abc1)), abc1)
     colnames(abc2) <- c("stat", "variable", "data1", "data2")
@@ -40,8 +40,8 @@ ddiff_info_univariate <- function(dat1, dat2, key,
   }
 
   for (arg in names(measure_arg_con)) {
-    test1 = data.frame(sapply(dat1[, unlist(objective$data_1$continous)], measure_arg_con[[arg]]))
-    test2 = data.frame(sapply(dat2[, unlist(objective$data_2$continous)], measure_arg_con[[arg]]))
+    test1 = data.frame(sapply(dat1[, unlist(objective$data_1$continuous)], measure_arg_con[[arg]]))
+    test2 = data.frame(sapply(dat2[, unlist(objective$data_2$continuous)], measure_arg_con[[arg]]))
     abc <- merge(test1, test2, by="row.names")
     diff_result <- rbind(diff_result, cbind(rep(arg, nrow(abc)),  abc))
   }
