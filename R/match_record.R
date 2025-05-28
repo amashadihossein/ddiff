@@ -38,7 +38,7 @@ match_record <- function(diffable_obj, mincol_match_rate = 0.5){
                                                           "modify_match")) 
   
   #TODO take out sig from complex match
-  if(length(record_sigs$unmatch)>0 & length(record_sigs$unmatch_re)>0){
+  if(length(record_sigs$unmatch)>0 & length(record_sigs$unmatch_ref)>0){
 
     df_unmatched <- df[df$record_sig %in% record_sigs$unmatch,,drop=F]
     df_ref_unmatched <- df_ref[df_ref$record_sig %in% record_sigs$unmatch_ref,,drop=F]
